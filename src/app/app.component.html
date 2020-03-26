@@ -1,3 +1,19 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="content" side="start" dir="rtl" [type]="overlay">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>תפריט</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-item button ion-item *ngFor="let p of pages" [routerLink]="p.link" [routerDirection]="root">
+          <ion-icon slot="start" name="{{p.icon}}" color="secondary"></ion-icon>
+          <ion-label>{{p.title}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="content"></ion-router-outlet>
 </ion-app>
