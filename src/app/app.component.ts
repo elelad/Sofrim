@@ -13,7 +13,7 @@ export class AppComponent {
   pages = [
     { title: 'בית', link: '/home', icon: 'home' },
     { title: 'נוסח מלא', link: '/full', icon: 'book' },
-    { title: 'הגדרות', link: '/setting', icon: 'options' },
+    { title: 'הגדרות', link: '/settings', icon: 'options' },
     { title: 'אודות', link: '/about', icon: 'information-circle' },
     { title: 'פרטיות', link: '/privacy', icon: 'person' },
     { title: 'נגישות', link: '/accessibility', icon: 'body' },

@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu contentId="content" side="start" [type]="overlay">
+  <ion-menu contentId="content" side="start" type="overlay">
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>תפריט</ion-title>
@@ -9,7 +9,7 @@
     <ion-content>
       <ion-list>
         <ion-menu-toggle *ngFor="let p of pages">
-          <ion-item details="none" [routerLink]="p.link" [routerDirection]="root">
+          <ion-item details="none" [routerLink]="p.link" routerDirection="root">
             <ion-icon slot="start" name="{{p.icon}}" color="secondary"></ion-icon>
             <ion-label>{{p.title}}</ion-label>
           </ion-item>
