@@ -1,5 +1,7 @@
 {
   "name": "sofrim-ionic5",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

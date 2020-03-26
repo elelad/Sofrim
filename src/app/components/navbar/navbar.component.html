@@ -1,18 +1,18 @@
 <ion-header>
-<ion-toolbar color="primary">
-  <ion-button *ngIf="menuBtn" menuToggle end>
-    <ion-icon name="menu"></ion-icon>
-  </ion-button>
-  <ion-buttons slot="end">
-    <ion-button *ngIf="settingsService.showAccessibilityBtn && accBtn" (click)="presentPopover($event)">
-      <ion-icon slot="iocn-only" name="body"></ion-icon>
-    </ion-button>
-    <ion-button *ngIf="shareBtn" icon-only (click)="presentShaerPopover($event)">
-        <ion-icon slot="iocn-only" name="share"></ion-icon>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="settingsService.showAccessibilityBtn && accBtn" (click)="presentPopover($event)">
+        <ion-icon slot="icon-only" name="body"></ion-icon>
       </ion-button>
-  </ion-buttons>
-  <ion-title dir="rtl">
-    <span [routerLink]="'/home'" class="pointer">{{navTitle}}</span>
-  </ion-title>
-</ion-toolbar>
+      <ion-button *ngIf="shareBtn" (click)="presentShaerPopover($event)">
+        <ion-icon slot="icon-only" name="share-social"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title routerLink="/home" class="pointer" dir="rtl">
+      {{navTitle}}
+    </ion-title>
+  </ion-toolbar>
 </ion-header>

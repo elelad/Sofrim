@@ -11,12 +11,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent {
   pages = [
-    { title: 'בית', link: 'Home', icon: 'home' },
-    { title: 'נוסח מלא', link: 'Full', icon: 'book' },
-    { title: 'הגדרות', link: 'Setting', icon: 'options' },
-    { title: 'אודות', link: 'About', icon: 'information-circle' },
-    { title: 'פרטיות', link: 'Privacy', icon: 'person' },
-    { title: 'נגישות', link: 'Accessibility', icon: 'body' },
+    { title: 'בית', link: '/home', icon: 'home' },
+    { title: 'נוסח מלא', link: '/full', icon: 'book' },
+    { title: 'הגדרות', link: '/setting', icon: 'options' },
+    { title: 'אודות', link: '/about', icon: 'information-circle' },
+    { title: 'פרטיות', link: '/privacy', icon: 'person' },
+    { title: 'נגישות', link: '/accessibility', icon: 'body' },
     // { title: 'List'}
   ];
 

@@ -1,9 +1,418 @@
 import { Injectable } from '@angular/core';
+import { SettingsService } from './settings.service';
+import { ToastController, Platform, AlertController } from '@ionic/angular';
+import { C } from '../constants/constants';
+import { Badge } from '@ionic-native/badge/ngx';
+
+declare var cordova: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
+  private delayTime = 0;
+  private comingNotification = 0;
+  public comingNotificationMsg = 'אין';
+  private lNotification: any;
+  public badgeSupported = false;
 
-  constructor() { }
+  constructor(
+    private settingsService: SettingsService, private toastCtrl: ToastController, private plt: Platform, private badge: Badge,
+    private alertCtrl: AlertController) {
+  }
+
+  initNotifications(force: boolean = false) {
+    this.plt.ready().then(() => {
+      this.lNotification = cordova.plugins.notification.local;
+      if (this.plt.is('ios')) {
+        this.lNotification.addActions('asnooze', [{ id: 'snooze', title: 'נודניק', launch: true }]);
+      }
+      this.regidaterListeners();
+      this.initBadge();
+      this.checkPermissionAndSetAll(force);
+      // this.getNewNote(); // for test
+      this.setNextYearOfferNotifications();
+    });
+  }
+
+  initBadge() {
+    if (this.plt.is('cordova')) {
+      this.badge.hasPermission().then((has) => {
+        if (!has) {
+          this.badge.requestPermission();
+        }
+      }).catch((e) => { console.log(e); });
+      this.badge.isSupported().then(supported => {
+        this.badgeSupported = supported;
+      });
+    }
+  }
+
+  checkIfLaunchFromNotification() {
+    console.log('cordova.plugins.notification.local.launchDetails');
+    const launchDetails = this.lNotification.launchDetails;
+    console.log('launchDetails: ');
+    console.log(launchDetails);
+    if (launchDetails) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  regidaterListeners() {
+
+    this.lNotification.on('snooze', (notification: any, eopts) => {// + i
+      console.log(notification);
+      this.snoozeAlert(notification.id - 1);
+    });
+    // }
+    this.lNotification.on('click', (n, s) => {
+      console.log('notification clicked');
+      console.log(n);
+      console.log(s);
+      // this.localNotifications.update()
+      if (n.id >= 700 && n.id < 800) {
+        // this.app.getRootNav().push('Reminder');
+      }
+      this.badge.clear().then((b) => {
+        console.log('badge');
+        console.log(b);
+      }).catch((e) => {
+        console.log('badge error');
+        console.log(e);
+      });
+    });
+    setTimeout(() => {
+      this.lNotification.fireQueuedEvents();
+    }, 500);
+  }
+
+
+
+  getNewNote() {
+    console.log('new noti schedule');
+    const notification = this.addSound({
+      id: 40,
+      title: 'new noti',
+      trigger: { in: 10, unit: 'second' },
+      actions: this.getActions(),
+      launch: false,
+      foreground: true,
+      priority: 2,
+      icon: 'file://logo.png',
+      smallIcon: 'res://noti.png',
+      badge: (this.settingsService.showBadge) ? 1 : null
+
+    });
+    this.lNotification.schedule(notification);
+
+  }
+
+  addSound(noti: any) {
+    if (this.settingsService.longSound) {
+      if (this.plt.is('ios')) {
+        noti.sound = 'file://assets/alarm.mp3';
+
+      } else if (this.plt.is('android')) {
+        noti.sound = 'res://alarm.mp3';
+      }
+    }
+    return noti;
+  }
+
+  getNote() {
+    this.lNotification.schedule({
+      id: 999,
+      title: 'סופרים וזוכרים',
+      text: 'הודעת ניסיון - הכפתור לא יופיע באפליקציה הסופית',
+      at: new Date(Date.now() + 0 * 60000),
+      icon: 'file://logo.png',
+      smallIcon: 'res://noti.png',
+      badge: (this.settingsService.showBadge) ? 1 : null
+    });
+    console.log('test notification sent');
+  }
+
+  checkPermissionAndSetAll(force: boolean = false) {
+    if (this.plt.is('cordova')) {
+      (force) ? console.log('force') : console.log('not force');
+      this.lNotification.hasPermission((has: boolean) => {
+        if (has) {
+          console.log('has: ' + has);
+          this.setIfNoNotifications(force);
+        } else {
+          console.log('has: ' + has);
+          this.settingsService.setAlowNotification();
+          this.setIfNoNotifications(force);
+        }
+      }); //
+    }
+  }
+
+  setIfNoNotifications(force: boolean = false) {
+    console.log('setIfNoNotifications');
+    if (this.plt.is('cordova')) {
+      this.lNotification.getAll((allScheduled) => {
+        if (allScheduled.length > 0 && !force && allScheduled[0].actions && allScheduled[0].actions.length > 0) {
+          console.log('allScheduled: no need to update');
+          this.getComingNotification();
+        } else {
+          this.setNotificationForAllOmer();
+        }
+      });
+    }
+  }
+
+  async snoozeAlert(omerIndex) {
+    console.log('omerIndex: ' + omerIndex);
+    const msg = C.omerDays[omerIndex].getOmerString(this.settingsService.nosach);
+    console.log(msg);
+    const notification = {
+      id: omerIndex + 1,
+      badge: (this.settingsService.showBadge) ? omerIndex + 1 : null,
+      title: 'סופרים וזוכרים',
+      text: msg
+    };
+    const alert = await this.alertCtrl.create({
+      header: 'הזכר לי בעוד',
+      // subTitle: '',
+      inputs: [
+        { type: 'radio', name: '5min', value: '5', label: 'חמש דקות', id: '5min' },
+        { type: 'radio', name: '10min', value: '10', label: 'עשר דקות', id: '10min', checked: true },
+        { type: 'radio', name: '15min', value: '15', label: 'חמש עשרה דקות', id: '15min' },
+        { type: 'radio', name: '30min', value: '30', label: 'שלושים דקות', id: '30min' },
+        { type: 'radio', name: '45min', value: '45', label: 'ארבעים וחמש דקות', id: '45min' }
+      ],
+      buttons: [
+        {
+          text: 'הפעלה',
+          handler: (data) => {
+            console.log(data);
+            this.lNotification.schedule(this.addSound({
+              id: omerIndex + 1,
+              title: notification.title,
+              text: notification.text,
+              actions: this.getActions(),
+              trigger: { in: data, unit: 'minute' }, // second
+              badge: (this.settingsService.showBadge) ? notification.badge : null,
+              icon: 'file://logo.png',
+              smallIcon: 'res://noti.png',
+              foreground: true,
+              priority: 2
+            }));
+            setTimeout(async () => {
+              const toast = await this.toastCtrl.create({
+                message: 'נודניק הוגדר',
+                duration: 3000,
+                position: 'top',
+                cssClass: 'toast'
+              });
+              toast.present();
+              // if (!this.plt.is('ios')) {
+              //   this.plt.exitApp();
+              // }
+            }, 1000);
+          }
+        },
+        {
+          text: 'ביטול',
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  getActions() {
+    if (this.plt.is('android')) {
+      return [{ id: 'snooze', title: 'נודניק', launch: true }];
+    }
+    return 'asnooze';
+  }
+
+  setNotificationForAllOmer(toast: boolean = true) {
+    if (this.lNotification) {
+      this.delayTime = this.settingsService.notificationTime * 60 * 60 * 1000;
+      const nowDate = new Date(Date.now());
+      const geoYear = nowDate.getFullYear();
+      console.log(geoYear);
+      let omerDays: number[];
+      if (localStorage.getItem('omer' + geoYear)) { omerDays = JSON.parse(localStorage.getItem('omer' + geoYear)); }
+      const notificationArray: {}[] = [];
+      const consoleArray: {}[] = [];
+      console.log('--- omerDays ---');
+      console.table(omerDays);
+      if (omerDays) {
+        omerDays.forEach((day: any, index) => {
+          let isShabat = false;
+          if (new Date(day).getDay() === 5 && this.settingsService.preventShabatNotification ||
+            index === 5 && this.settingsService.preventShabatNotification) {
+            isShabat = true;
+          }
+          if ((day + this.delayTime) > nowDate.getTime() && !isShabat) {// to set notification for this day all evening (6 * 60 * 60000)
+            // notificationArray.push(this.addSound({
+            this.lNotification.schedule(this.addSound({
+              id: index + 1,
+              title: 'סופרים וזוכרים',
+              text: C.omerDays[index].getOmerString(this.settingsService.nosach),
+              // actions: [{ id: 'snooze', title: 'נודניק', launch: true }],// + index + 1
+              // actions: 'asnooze',
+              actions: this.getActions(),
+              trigger: { at: new Date(day + this.delayTime) },
+              foreground: true,
+              priority: 2,
+              icon: 'file://logo.png',
+              smallIcon: 'res://noti.png',
+              badge: (this.settingsService.showBadge) ? index + 1 : null,
+            }));
+            const consoleDate = new Date(day + this.delayTime);
+            consoleArray.push({
+              date: consoleDate.toString(),
+              id: index,
+              text: C.omerDays[index].getOmerString(this.settingsService.nosach),
+              omerDay: day.toString()
+            });
+          }
+          if (index === 27 && (day + 2.5 * 60 * 60 * 1000) > nowDate.getTime()) {// && !isShabat
+            console.log('roy: ' + new Date(day + 2.5 * 60 * 60 * 1000));
+            this.lNotification.schedule(this.addSound({
+              id: 9999,
+              title: 'סופרים וזוכרים',
+              text: 'יום השנה לפטירתו של רועי',
+              foreground: true,
+              priority: 2,
+              trigger: { at: new Date(day + 2.5 * 60 * 60 * 1000) }, // 20:30
+              icon: 'file://favImage.jpg',
+              smallIcon: 'res://noti.png'
+            }));
+          }
+        });
+      }
+      console.log('notificationArray:');
+      console.table(notificationArray);
+      if (toast) {
+        this.toast('התראות הוגדרו');
+      }
+      setTimeout(() => {
+        this.getComingNotification();
+      }, 800);
+    }
+  }
+
+  allScheduledAndNewAreSame(old: any[], n: any[]): boolean {
+    if (old !== undefined) {
+      return n.every((noti) => {
+        const oldNoti = old.find((item) => item.id === noti.id); // get the new item that match to the old one
+        return (oldNoti !== undefined && oldNoti.badge === noti.badge && oldNoti.title === noti.title
+          && oldNoti.text === noti.text && oldNoti.trigger.at === noti.trigger.at); // if item exist but not match then return false
+      });
+    } else {
+      return false;
+    }
+
+  }
+
+  removeAll() {
+    try {
+      this.lNotification.cancelAll((e) => {
+        console.log('all notification removed');
+        this.toast('התראות בוטלו');
+        this.comingNotificationMsg = 'אין';
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  getComingNotification() {
+    if (this.plt.is('cordova')) {
+      this.comingNotification = 0;
+      this.lNotification.getAll((n) => {
+        console.log('getComingNotification');
+        // console.table(n);
+        const now = (Math.floor(Date.now() / 1000));
+        n.forEach((noti) => {
+          if (this.comingNotification === 0) {
+            console.log(typeof (noti.trigger.at));
+            this.comingNotification = noti.trigger.at;
+            console.log('noti.at: ' + noti.trigger.at);
+            console.log('now: ' + now);
+          } else {
+            if ((noti.trigger.at < this.comingNotification && (noti.trigger.at > now))) {
+              console.log('(noti.at < this.comingNotification) && (noti.trigger.at > now)');
+              console.log('noti.trigger.at: ' + noti.trigger.at);
+              console.log('now: ' + now);
+              this.comingNotification = noti.trigger.at;
+              // coming = noti.at;
+            }
+          }
+        });
+        // this.comingNotification = coming;
+        const comingDate = new Date(this.comingNotification); // * 1000
+        if (this.comingNotification !== 0) {
+          this.comingNotificationMsg =
+            comingDate.getDate() + '/' +
+            (comingDate.getMonth() + 1) + '/' +
+            comingDate.getFullYear() + ' ' + comingDate.getHours() + ':00';
+        }
+        console.log('this.comingNotification:' + comingDate.toString());
+        console.log(this.comingNotificationMsg);
+      });
+    }
+  }
+
+  async toast(msg: string) {
+    const toast = await this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'top',
+      cssClass: 'toast'
+    });
+    toast.present();
+  }
+
+  onTaskAdded(task) {
+    console.log('Task successfully scheduled.');
+  }
+
+  onError(error) {
+    alert('Sorry, couldn\'t set the alarm: ' + error);
+  }
+
+  setNextYearOfferNotifications() {
+    const isSet = (localStorage.getItem(C.localSofrimNextYearReminder));
+    if (this.lNotification && !isSet) {
+      const nowDate = new Date(Date.now());
+      const geoYear = nowDate.getFullYear();
+      console.log(geoYear);
+      let omerDays: number[];
+      if (localStorage.getItem('omer' + geoYear)) { (omerDays = JSON.parse(localStorage.getItem('omer' + geoYear))); }
+      if (omerDays.length > 0) {
+        for (let i = 0; i < 2; i++) {
+          console.log(omerDays[45 + i]);
+          if (omerDays[45 + i] > Date.now()) {
+            const noti = {
+              id: 700 + i,
+              title: 'סופרים וזוכרים',
+              text: 'לתזכר אותך להוריד את היישומון בשנה הבאה?',
+              foreground: true,
+              priority: 2,
+              trigger: { at: new Date(omerDays[45 + i] + 2.5 * 60 * 60 * 1000) }, // 20:30
+              icon: 'file://logo.png',
+              smallIcon: 'res://noti.png'
+            };
+            this.lNotification.schedule(noti);
+          }
+        }
+      }
+    }
+  }
+
+  removeNextYearNotifications() {
+    if (this.lNotification) {
+      this.lNotification.cancel([700, 701, 702, 703, 704, 705]);
+    }
+  }
 }
