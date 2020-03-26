@@ -1,3 +1,18 @@
-<p>
-  navbar works!
-</p>
+<ion-header>
+<ion-toolbar color="primary">
+  <ion-button *ngIf="menuBtn" menuToggle end>
+    <ion-icon name="menu"></ion-icon>
+  </ion-button>
+  <ion-buttons slot="end">
+    <ion-button *ngIf="settingsService.showAccessibilityBtn && accBtn" (click)="presentPopover($event)">
+      <ion-icon slot="iocn-only" name="body"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="shareBtn" icon-only (click)="presentShaerPopover($event)">
+        <ion-icon slot="iocn-only" name="share"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  <ion-title dir="rtl">
+    <span [routerLink]="'/home'" class="pointer">{{navTitle}}</span>
+  </ion-title>
+</ion-toolbar>
+</ion-header>
