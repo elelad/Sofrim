@@ -5,15 +5,16 @@ import { ShareMenuComponent } from '../share-menu/share-menu.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AccMenuComponent } from '../acc-menu/acc-menu.component';
 import { FooterComponent } from '../footer/footer.component';
+import { FabComponent } from '../fab/fab.component';
 
 
 
 @NgModule({
-  declarations: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent],
+  declarations: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent, FabComponent],
   imports: [
     CommonModule,
     IonicModule
   ],
-  exports: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent],
+  exports: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent, FabComponent],
 })
 export class SharedModule { }
