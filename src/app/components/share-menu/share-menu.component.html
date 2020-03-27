@@ -1,3 +1,27 @@
-<p>
-  share-menu works!
-</p>
+<ion-list class="ion-no-padding">
+  <ion-list-header>
+    הולכים בדרכו
+  </ion-list-header>
+  <ion-item href="mailto:?to=&subject={{subjectMsg}}&body={{hebDate.omer}} {{this.newUrlMsg}}" (click)="mail()">
+    <ion-icon slot="start" color="secondary" name="mail" class="larger"></ion-icon>
+    <ion-label>דואר אלקטרוני</ion-label>
+  </ion-item>
+  <ion-item [href]="sanitize('sms://?&body=')" (click)="sms()">
+    <ion-icon slot="start" color="secondary" name="chatbox" class="larger"></ion-icon>
+    <ion-label>הודעת טקסט</ion-label>
+  </ion-item>
+  <ion-item [href]="sanitize('https://api.whatsapp.com/send?text=')" data-action="share/whatsapp/share"
+    (click)="whatsup()">
+    <ion-icon slot="start" color="secondary" name="logo-whatsapp" class="larger"></ion-icon>
+    <ion-label>&nbsp;Whatsapp</ion-label>
+  </ion-item>
+  <ion-item button (click)="post()">
+    <ion-icon slot="start" color="secondary" name="logo-facebook" class="larger"></ion-icon>
+    <ion-label>Facebook</ion-label>
+  </ion-item>
+  <ion-item button (click)="copy()">
+      <ion-icon slot="start" color="secondary" name="copy" class="larger"></ion-icon>
+    <ion-label>העתק</ion-label>
+  </ion-item>
+  <!---->
+</ion-list>

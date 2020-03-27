@@ -1,6 +1,7 @@
 // tslint:disable: max-line-length
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Themes } from '../constants/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class SettingsService {
   public highTheme = false;
   public showAccessibilityBtn = false;
   public showPicAtMale = true;
-  public theme = 'none';
+  public theme = Themes.None;
   public linkToApp = true;
   public showBadge = true;
   public showKavana = false;
@@ -40,7 +41,7 @@ export class SettingsService {
       this.showAccessibilityBtn = true;
     }
     (localStorage.getItem('sofrimShowPicAtMale')) ? (this.showPicAtMale = (localStorage.getItem('sofrimShowPicAtMale') === 'true')) : (this.showPicAtMale = true);
-    (localStorage.getItem('sofrimTheme')) ? (this.theme = localStorage.getItem('sofrimTheme')) : (this.theme = 'none');
+    (localStorage.getItem('sofrimTheme')) ? (this.theme = localStorage.getItem('sofrimTheme') as Themes) : (this.theme = Themes.None);
     (localStorage.getItem('sofrimLinkToApp')) ? (this.linkToApp = (localStorage.getItem('sofrimLinkToApp') === 'true')) : (this.linkToApp = true);
     (localStorage.getItem('sofrimShowBadge')) ? (this.showBadge = (localStorage.getItem('sofrimShowBadge') === 'true')) : (this.showBadge = true);
     (localStorage.getItem('sofrimShowKavana')) ? (this.showKavana = (localStorage.getItem('sofrimShowKavana') === 'true')) : (this.showKavana = false);

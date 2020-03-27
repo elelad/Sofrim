@@ -6,6 +6,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { AccMenuComponent } from '../acc-menu/acc-menu.component';
 import { FooterComponent } from '../footer/footer.component';
 import { FabComponent } from '../fab/fab.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -13,6 +14,7 @@ import { FabComponent } from '../fab/fab.component';
   declarations: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent, FabComponent],
   imports: [
     CommonModule,
+    FormsModule,
     IonicModule
   ],
   exports: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent, FabComponent],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-fab',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./fab.component.scss'],
 })
 export class FabComponent implements OnInit {
+
+  @Input() showFab = true;
 
   constructor() { }
 

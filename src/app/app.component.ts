@@ -17,7 +17,6 @@ export class AppComponent {
     { title: 'אודות', link: '/about', icon: 'information-circle' },
     { title: 'פרטיות', link: '/privacy', icon: 'person' },
     { title: 'נגישות', link: '/accessibility', icon: 'body' },
-    // { title: 'List'}
   ];
 
   constructor(

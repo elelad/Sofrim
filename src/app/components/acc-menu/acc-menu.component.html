@@ -1,3 +1,39 @@
-<p>
-  acc-menu works!
-</p>
+<ion-list class="ion-no-padding">
+  <ion-list-header>
+    <h3>נגישות</h3>
+  </ion-list-header>
+  <!--<button ion-item (click)="goToPage7()">הצהרת נגישות</button>-->
+  <ion-item-group>
+    <ion-item-divider>גודל אות</ion-item-divider>
+    <!-- <ion-list-header text-right class="rtl">
+          גודל אות
+      </ion-list-header> -->
+    <ion-list class="ion-no-padding">
+      <ion-radio-group [(ngModel)]="settingsService.fontSize" (ionChange)="settingsService.setFontSize()">
+        <ion-item>
+          <ion-label>קטן</ion-label>
+          <ion-radio value="sm"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <!---->
+          <ion-label>בינוני</ion-label>
+          <ion-radio value="me"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>גדול</ion-label>
+          <ion-radio value="lg"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ion-item-group>
+  <!-- <ion-list-header text-right class="rtl">
+      ניגודיות
+  </ion-list-header> -->
+  <ion-item-group>
+    <ion-item-divider>ניגודיות</ion-item-divider>
+    <ion-item>
+      <ion-label>גבוהה</ion-label>
+      <ion-checkbox [(ngModel)]="settingsService.highTheme" (ionChange)="settingsService.setHighTheme()"></ion-checkbox>
+    </ion-item>
+  </ion-item-group>
+</ion-list>
