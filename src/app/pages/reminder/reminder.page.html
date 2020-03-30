@@ -1,9 +1,98 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>reminder</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'תזכורת להורדה'" [accBtn]="false" [shareBtn]="false"></app-navbar>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-card *ngIf="!done && !loading">
+    <!-- <ion-card-header text-center>
+        תזכורת לשנה הבאה
+      </ion-card-header> -->
+    <ion-card-content>
+      <ion-item lines="none" detail="false" class="ion-text-wrap">
+        <ion-label>
+          <div class="ion-text-center">רוצה להסיר את האפליקציה ולקבל תזכורת להתקנה בשנה הבאה?
+            <br>
+            ניתן להשאיר פרטים ובע״ה נתראה:
+          </div>
+        </ion-label>
+      </ion-item>
+      <form [formGroup]="remiderForm">
+        <ion-item class="ion-text-wrap">
+          <ion-icon slot="start" name="at" color="secondary"></ion-icon>
+          <ion-label>שם</ion-label>
+          <ion-input formControlName="name"
+            [class.invalid]="remiderForm.controls.name.dirty && !remiderForm.controls.name.valid"
+            [class.valid]="remiderForm.controls.name.dirty && remiderForm.controls.name.valid" placeholder=""
+            type="text" class="ion-text-start">
+          </ion-input>
+        </ion-item>
+        <ion-item class="ion-text-wrap">
+          <ion-icon slot="start" name="mail" color="secondary"></ion-icon>
+          <ion-label>דוא״ל</ion-label>
+          <ion-input formControlName="mail"
+            [class.invalid]="remiderForm.controls.mail.dirty && !remiderForm.controls.mail.valid"
+            [class.valid]="remiderForm.controls.mail.dirty && remiderForm.controls.mail.valid" placeholder=""
+            type="mail" class="ion-text-start">
+          </ion-input>
+        </ion-item>
+        <ion-item class="ion-text-wrap">
+          <ion-icon slot="start" name="call" color="secondary"></ion-icon>
+          <ion-label>נייד</ion-label>
+          <ion-input formControlName="phone"
+            [class.invalid]="remiderForm.controls.phone.dirty && !remiderForm.controls.phone.valid"
+            [class.valid]="remiderForm.controls.phone.dirty && remiderForm.controls.phone.valid" placeholder=""
+            type="tel" class="ion-text-start">
+          </ion-input>
+        </ion-item>
+        <ion-item lines="none" detail="false" *ngIf="error" class="ion-text-wrap">
+          <ion-icon color="danger" slot="start" name="alert"></ion-icon>
+          <ion-label color="danger" class="errorMsg">
+            <p class="errorMsg">{{errorMsg}}</p>
+            <p class="errorMsg">{{formErrors.name}}</p>
+            <p class="errorMsg">{{formErrors.mail}}</p>
+            <p class="errorMsg">{{formErrors.phone}}</p>
+          </ion-label>
+        </ion-item>
+      </form>
+      <ion-item lines="none" detail="false" class="ion-text-wrap">
+        <ul class="ion-text-start">
+          <p>
+            <li>לא יישלח דיוור פרסומי</li>
+            <li>פרטיך לא יועברו לאף גורם</li>
+          </p>
+        </ul>
+      </ion-item>
+    </ion-card-content>
+    <ion-card-header class="ion-text-center">
+      <ion-button color="secondary" [disabled]="formInvalid" (click)="send()">
+        <ion-icon slot="start" name="checkmark"></ion-icon>
+        שליחה
+        </ion-button>
+    </ion-card-header>
+  </ion-card>
 
+  <ion-card *ngIf="done && !loading">
+    <ion-card-content class="ion-text-center">
+      <ion-chip class="ion-text-wrap">
+        <ion-icon name="thumbs-up" color="secondary"></ion-icon>
+        <ion-label>תודה על ההרשמה, נתראה בשנה הבאה!</ion-label>
+      </ion-chip>
+      <ion-item *ngIf="error" class="ion-text-wrap">
+        <ion-icon color="danger" slot="start" name="alert"></ion-icon>
+        <ion-label color="danger">
+          <p class="errorMsg">{{errorMsg}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+    <ion-card-header class="ion-text-center">
+      <ion-button color="danger" (click)="sendRemove()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        הסרה
+        </ion-button>
+    </ion-card-header>
+  </ion-card>
+
+  <div *ngIf="loading" class="spinnerBox">
+    <ion-spinner></ion-spinner>
+  </div>
 </ion-content>
+<app-footer></app-footer>
+<app-fab></app-fab>

@@ -26,6 +26,7 @@ export class SettingsService {
   public showBadge = true;
   public showKavana = false;
   public longSound = false;
+  public appId = '1220693649';  
 
   constructor(private plt: Platform) {
     (localStorage.getItem('sofrimNosach')) ? (this.nosach = localStorage.getItem('sofrimNosach')) : (this.nosach = 'as');
@@ -35,26 +36,44 @@ export class SettingsService {
     (localStorage.getItem('sofrimNotificationTime')) ? (this.notificationTime = +localStorage.getItem('sofrimNotificationTime')) : (this.notificationTime = 2);
     (localStorage.getItem('sofrimShareMsg')) ? (this.shareMsg = localStorage.getItem('sofrimShareMsg')) : (this.shareMsg = this.defultShareMsg);
     (localStorage.getItem('sofrimFontSize')) ? (this.fontSize = localStorage.getItem('sofrimFontSize')) : (this.fontSize = this.defultFontSizeName);
-    (localStorage.getItem('sofrimHighTheme')) ? (this.highTheme = (localStorage.getItem('sofrimHighTheme') === 'true')) : (this.highTheme = false);
+
     (localStorage.getItem('sofrimShowAccessibilityBtn')) ? (this.showAccessibilityBtn = (localStorage.getItem('sofrimShowAccessibilityBtn') === 'true')) : (this.showAccessibilityBtn = false);
     if (!(localStorage.getItem('sofrimShowAccessibilityBtn')) && (this.plt.is('desktop') || this.plt.is('mobileweb'))) {
       this.showAccessibilityBtn = true;
     }
     (localStorage.getItem('sofrimShowPicAtMale')) ? (this.showPicAtMale = (localStorage.getItem('sofrimShowPicAtMale') === 'true')) : (this.showPicAtMale = true);
-    (localStorage.getItem('sofrimTheme')) ? (this.theme = localStorage.getItem('sofrimTheme') as Themes) : (this.theme = Themes.None);
+
     (localStorage.getItem('sofrimLinkToApp')) ? (this.linkToApp = (localStorage.getItem('sofrimLinkToApp') === 'true')) : (this.linkToApp = true);
     (localStorage.getItem('sofrimShowBadge')) ? (this.showBadge = (localStorage.getItem('sofrimShowBadge') === 'true')) : (this.showBadge = true);
     (localStorage.getItem('sofrimShowKavana')) ? (this.showKavana = (localStorage.getItem('sofrimShowKavana') === 'true')) : (this.showKavana = false);
     (localStorage.getItem('sofrimLongSound')) ? (this.longSound = (localStorage.getItem('sofrimLongSound') === 'true')) : (this.longSound = false);
+
+    if (localStorage.getItem('sofrimTheme')) {
+      this.theme = localStorage.getItem('sofrimTheme') as Themes;
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      if (prefersDark.matches){
+        this.theme = Themes.Dark;
+      } else {
+        this.theme = Themes.None;
+      }
+    }
+    (localStorage.getItem('sofrimHighTheme')) ? (this.highTheme = (localStorage.getItem('sofrimHighTheme') === 'true')) : (this.highTheme = false);
+
     this.changeFont();
     this.changeToHighTheme();
-    if (!this.highTheme) {
-      document.body.className = this.theme;
+    // if (!this.highTheme) {
+    //   document.body.className = this.theme;
+    // }
+
+    if (this.plt.is('android')) {
+      this.appId = 'com.elelad.sofrim';
     }
+
   }
 
   setShowPicAtMale() {
-    localStorage.setItem('sofrimShowBadge', this.showBadge.toString());
+    localStorage.setItem('sofrimShowPicAtMale', this.showPicAtMale.toString());
   }
 
   setShowBadge() {

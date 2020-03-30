@@ -1,9 +1,133 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'הגדרות'"></app-navbar>
+
 
 <ion-content>
-
+  <ion-list class="ion-no-padding">
+    <ion-item-group>
+      <ion-item-divider color="light">הגדרות אפליקציה</ion-item-divider>
+      <ion-item lines="inset">
+        <ion-icon slot="start" name="book" color="secondary"></ion-icon>
+        <ion-label>נוסח</ion-label>
+        <ion-select [(ngModel)]="settingsService.nosach" (ionChange)="setNosach()" class="ltr" cancelText="ביטול"
+          okText="שמירה">
+          <ion-select-option [value]="nosachOptions.Sfarad">ספרד</ion-select-option>
+          <ion-select-option [value]="nosachOptions.Askenaz">אשכנז</ion-select-option>
+          <ion-select-option [value]="nosachOptions.Mizrach">עדות המזרח</ion-select-option>
+          <ion-select-option [value]="nosachOptions.Teiman">תימן</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" class="item-text-wrap">
+        <ion-icon slot="start" name="megaphone" color="secondary"></ion-icon>
+        <ion-label fixed>הודעת שיתוף</ion-label>
+        <ion-input type="text" text-left [(ngModel)]="settingsService.shareMsg" (keyup)="settingsService.setShareMsg()"
+         ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="eye-off" color="secondary"></ion-icon>
+        <ion-label>תמונה בנוסח מלא</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.showPicAtMale" (ionChange)="settingsService.setShowPicAtMale()">
+        </ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="bookmark" color="secondary"></ion-icon>
+        <ion-label>כוונות הארי</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.showKavana" (ionChange)="settingsService.setShowKavana()"></ion-toggle>
+      </ion-item>
+      <ion-item lines="inset">
+        <ion-icon slot="start" name="color-fill" color="secondary"></ion-icon>
+        <ion-label>רקע</ion-label>
+        <ion-select [(ngModel)]="settingsService.theme" (ionChange)="settingsService.setTheme()" class="ltr"
+          cancelText="ביטול" okText="שמירה">
+          <ion-select-option [value]="themeOptions.Clean">נקי</ion-select-option>
+          <ion-select-option [value]="themeOptions.None">פריחה</ion-select-option>
+          <ion-select-option [value]="themeOptions.Crops">שיבולים</ion-select-option>
+          <ion-select-option [value]="themeOptions.Dark">כהה</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item detail routerLink="/reminder" routerDirection="root">
+        <ion-icon slot="start" name="calendar" color="secondary"></ion-icon>
+        <ion-label>תזכורת להורדה בשנה הבאה</ion-label>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider color="light">התראות</ion-item-divider>
+      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+        <ion-icon slot="start" name="notifications" color="secondary"></ion-icon>
+        <ion-label>התראות</ion-label>
+        <ion-toggle [disabled]="plt.is('desktop') || plt.is('mobileweb')" [(ngModel)]="settingsService.allowNotification"
+          (ionChange)="setNotification()"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="(!plt.is('desktop') && !plt.is('mobileweb'))">
+        <ion-icon slot="start" name="alarm" color="secondary"></ion-icon>
+        <ion-label>התראה קרובה</ion-label>
+        <div color="dark" item-content item-right>{{notificationsService.comingNotificationMsg}}</div>
+      </ion-item>
+      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+        <ion-icon slot="start" name="notifications-off" color="secondary"></ion-icon>
+        <ion-label>מנע התראה בשבת</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.preventShabatNotification"
+          [disabled]="!settingsService.allowNotification" (ionChange)="setPreventShabatNotification()"></ion-toggle>
+      </ion-item>
+      <ion-item lines="inset" *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+        <ion-icon slot="start" name="alarm" color="secondary"></ion-icon>
+        <ion-label>שעת התראה</ion-label>
+        <ion-select [(ngModel)]="settingsService.notificationTime" [disabled]="!settingsService.allowNotification"
+          (ionChange)="setNotificationTime()" class="ltr" cancelText="ביטול" okText="שמירה">
+          <ion-select-option value="1">19:00</ion-select-option>
+          <ion-select-option value="2">20:00</ion-select-option>
+          <ion-select-option value="3">21:00</ion-select-option>
+          <ion-select-option value="4">22:00</ion-select-option>
+          <ion-select-option value="5">23:00</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="notificationsService.badgeSupported">
+        <ion-icon slot="start" name="alert" color="secondary"></ion-icon>
+        <ion-label>ספירה בסמל</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.showBadge" (ionChange)="setShowBadge()"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+        <ion-icon slot="start" name="musical-note" color="secondary"></ion-icon>
+        <ion-label>צליל ארוך</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.longSound" (ionChange)="setLongSound()"></ion-toggle>
+      </ion-item>
+    </ion-item-group>
+    <p *ngIf="plt.is('desktop') || plt.is('mobileweb')" class="ion-text-center">
+      <ion-chip color="primary">
+        <ion-icon name="notifications" color="secondary"></ion-icon>
+        <ion-label>התראות פעילות באפליקציה המלאה בלבד</ion-label>
+      </ion-chip>
+      <br>
+      <a href="https://itunes.apple.com/us/app/%D7%A1%D7%95%D7%A4%D7%A8%D7%99%D7%9D-%D7%95%D7%96%D7%95%D7%9B%D7%A8%D7%99%D7%9D-%D7%A1%D7%A4%D7%99%D7%A8%D7%AA-%D7%94%D7%A2%D7%95%D7%9E%D7%A8/id1220693649?mt=8"
+        target="blank"
+        style="display:inline-block;overflow:hidden;background:url(/assets/appstore.svg) no-repeat;width:180px;height:50px;background-size:contain;background-position:center;margin:7px;"></a>
+      <a href='https://play.google.com/store/apps/details?id=com.elelad.sofrim' target="blank"
+        style="display:inline-block;overflow:hidden;background:url(/assets/google-play.png) no-repeat;width:180px;height:50px;background-size:contain;background-position:center;margin:7px;"></a>
+      <br>
+    </p>
+    <ion-item-group>
+      <ion-item-divider color="light">נגישות</ion-item-divider>
+      <ion-item>
+        <ion-icon slot="start" name="body" color="secondary"></ion-icon>
+        <ion-label>כפתור</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.showAccessibilityBtn"
+          (ionChange)="settingsService.setShowAccessibilityBtn()"></ion-toggle>
+      </ion-item>
+      <ion-item lines="inset">
+        <ion-icon slot="start" name="document" color="secondary"></ion-icon>
+        <ion-label>גודל אות</ion-label>
+        <ion-select [(ngModel)]="settingsService.fontSize" (ionChange)="settingsService.setFontSize()" class="ltr"
+          cancelText="ביטול" okText="שמירה">
+          <ion-select-option [value]="fontSizeOptions.Small">קטן</ion-select-option>
+          <ion-select-option [value]="fontSizeOptions.Medium">בינוני</ion-select-option>
+          <ion-select-option [value]="fontSizeOptions.Large">גדול</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="contrast" color="secondary"></ion-icon>
+        <ion-label text-right>ניגודיות גבוהה</ion-label>
+        <ion-toggle [(ngModel)]="settingsService.highTheme" (ionChange)="settingsService.setHighTheme()"></ion-toggle>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
 </ion-content>
+<app-footer></app-footer>

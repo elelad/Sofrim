@@ -1,21 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-import { IonicModule } from '@ionic/angular';
-
-import { RoyPageRoutingModule } from './roy-routing.module';
-
-import { RoyPage } from './roy.page';
 import { SharedModule } from '../../components/shared/shared.module';
+import { RoyPageRoutingModule } from './roy-routing.module';
+import { RoyPage } from './roy.page';
+
+
+
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+    SharedModule,
     RoyPageRoutingModule,
-    SharedModule
   ],
   declarations: [RoyPage]
 })

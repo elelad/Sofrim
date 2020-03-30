@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-roy',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoyPage implements OnInit {
 
-  constructor() { }
+  constructor(public plt: Platform) { }
 
   ngOnInit() {
   }

@@ -1,9 +1,210 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>full</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'נוסח מלא'"></app-navbar>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-start">
+              <span [ngSwitch]="settingsService.nosach">
+                <span *ngSwitchCase="'as'">נוסח ספרד</span>
+                <span *ngSwitchCase="'ask'">נוסח אשכנז</span>
+                <span *ngSwitchCase="'em'">נוסח עדות המזרח</span>
+                <span *ngSwitchCase="'te'">נוסח תימן</span>
+              </span>
+            </ion-col>
+            <ion-col class="ion-text-end">
+              <span>{{hebDate.hebDate}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center ion-padding-horizontal">
+        <div [ngSwitch]="settingsService.nosach">
+          <div *ngSwitchCase="'as'">
+            <p class="ion-text-justify">
+              לְשֵׁם יִחוּד קוּדְשָׁא בְּרִיךְ הוּא וּשְׁכִינְתֵּיהּ, בִּדְחִילוּ וּרְחִימוּ, לְיַחֲד שֵׁם י"ה בו"ה בְּיִחוּדָא שְׁלִים
+              בְּשֵׁם כָּל יִשְׂרָאֵל. הִנְנִי מוּכָן וּמְזֻמָּן לְקַיֵּם מִצְוַת עֲשֵׂה שֶׁל סְפִירַת הָעֹמֶר כְּמוֹ שֶׁכָּתוּב
+              בַּתּוֹרָה: וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיּוֹם הֲבִיאֲכֶם אֶת עֹמֶר הַתְּנוּפָה שֶׁבַע שַׁבָּתוֹת
+              תְּמִימֹת תִּהְיֶינָה: עַד מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים יוֹם וְהִקְרַבְתֶּם מִנְחָה
+              חֲדָשָׁה לַיְיָ: וִִיהִי נֹעַם יְיָ אֱלֹהֵינוּ עָלֵינוּ ומַעֲשֵׂה יָדֵינוּ כּוֹנְנָה עָלֵינוּ וּמַעֲשֵׂה יָדֵינוּ
+              כּוֹנְנֵהוּ:
+            </p>
+            <br>
+            <h2>
+              <strong>בָּרוּךְ אַתָּה יְיָ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְצִוָּנוּ עַל סְפִירַת הָעֹמֶר.</strong>
+            </h2>
+          </div>
+          <div *ngSwitchCase="'ask'">
+            <h2>
+              <strong>בָּרוּךְ אַתָּה יְיָ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְצִוָּנוּ עַל סְפִירַת הָעֹמֶר.</strong>
+            </h2>
+          </div>
+          <div *ngSwitchCase="'em'">
+            <p class="ion-text-justify">לְשֵׁם יִחוּד קֻדְשָׁא בְרִיךְ הוּא וּשְׁכִינְתֵּיהּ, בִּדְחִילוּ וּרְחִימוּ, וּרְחִימוּ וּדְחִילוּ, לְיַחֲדָא
+              שֵׁם יוֹ"ד קֵ"י בְּוָא"ו קֵ"י בְּיִחוּדָא שְׁלִים בְּשֵׁם כָּל יִשְׂרָאֵל. הִנֵּה אֲנַחְנוּ בָּאִים לְקַיֵּם
+              מִצְוַת סְפִירַת הָעֹמֶר, כְּדִכְתִיב: וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת מִיּוֹם הֲבִיאֲכֶם אֶת עֹמֶר
+              הַתְּנוּפָה, שֶׁבַע שַׁבָּתוֹת תְּמִימֹת תִּהְיֶינָה: עַד מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת תִּסְפְּרוּ חֲמִשִּׁים
+              יוֹם, וְהִקְרַבְתֶּם מִנְחָה חֲדָשָׁה לַיהֹוָה: לְתַקֵּן אֶת שָׁרְשָׁהּ בְּמָקוֹם עֶלְיוֹן. לַעֲשׂוֹת נַחַת
+              רוּחַ לְיוֹצְרֵנוּ. וִיהִי נֹעַם אֲדֹנָי אֱלֹהֵינוּ עָלֵינוּ. וּמַעֲשֵׂה יָדֵינוּ כּוֹנְנָה עָלֵינוּ. וּמַעֲשֵׂה
+              יָדֵינוּ כּוֹנְנֵהוּ. יְהֹוָה יִגְמֹר בַּעֲדִי, יְהֹוָה חַסְדְּךָ לְעוֹלָם, מַעֲשֵׂי יָדֶיךָ אַל תֶּרֶף אֶקְרָא
+              לֵאלֹהִים עֶלְיוֹן, לָאֵל גֹּמֵר עָלָי וָאֶעֱבֹר עָלַיִךְ וָאֶרְאֵךְ מִתְבּוֹסֶסֶת בְּדָמָיִךְ. וָאֹמַר לָךְ
+              בְּדָמַיִךְ חֲיִי וָאֹמַר לָךְ בְּדָמַיִךְ חֲיִי. בָּרְכִי נַפְשִׁי אֶת יְהֹוָה. יְהֹוָה אֱלֹהַי גָּדַלְתָּ
+              מְּאֹד. הוֹד וְהָדָר לָבָשְׁתָּ עֹטֶה אוֹר כַּשַּׂלְמָה. נוֹטֶה שָׁמַיִם כַּיְרִיעָה.</p>
+            <br>
+            <h2>
+              <strong>בָּרוּךְ אַתָּה יְהֹוָה, אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְצִוָּנוּ עַל סְפִירַת
+                הָעֹמֶר</strong>
+            </h2>
+          </div>
+          <div *ngSwitchCase="'te'">
+            <p class="ion-text-justify">
+              לְשֵׁם יֵחוּד קֻדשָׁא בְּרִיך הוּא וּשׁכִינְתֵיהּ
+            </p>
+            <br>
+            <h2>
+              <strong>בָּרוּךְ אַתָּה יְיָ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם, אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְצִוָּנוּ עַל סְפִירַת הָעֹמֶר.</strong>
+            </h2>
+          </div>
+        </div>
+        <br>
+        <h1>
+          <strong>{{hebDate.omer}}</strong>
+        </h1>
+        <h3 *ngIf="settingsService.showKavana" [innerHTML]="hebDate.kavana"></h3>
+        <br>
+        <p *ngIf="settingsService.nosach == 'as' || settingsService.nosach == 'ask'" text-center>הָרַחֲמָן הוּא יַחֲזִיר לָנוּ עֲבוֹדַת בֵּית הַמִּקְדָּשׁ לִמְקוֹמָהּ, בִּמְהֵרָה בְיָמֵינוּ אָמֵן סֶלָה.</p>
+        <p *ngIf="settingsService.nosach == 'em' || settingsService.nosach == 'te'" text-center>הָרַחֲמָן הוּא יַחֲזִיר עֲבוֹדַת בֵּית הַמִּקְדָּשׁ לִמְקוֹמָהּ בִּמְהֵרָה בְיָמֵינוּ אָמֵן.</p>
+        <br>
+        <p class="ion-text-justify">
+          לַמְנַצֵּחַ בִּנְגִינוֹת מִזְמוֹר שִׁיר: 
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 1">אֱלֹהִים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 2">יְחָנֵּנוּ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 3">וִיבָרְכֵנוּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 4">יָאֵר</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 5">פָּנָיו</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 6">אִתָּנוּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 7">סֶלָה</span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 8">לָדַעַת</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 9">בָּאָרֶץ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 10">דַרְכֶּךָ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 11">בְּכָל</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 12">גּוֹיִם</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 13">יְשׁוּעָתֶךָ</span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 14">יוֹדוּךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 15">עַמִּים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 16">אֱלֹהִים</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 17">יוֹדוּךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 18">עַמִּים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 19">כֻּלָּם</span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 20">
+            <span [class.l]="settingsService.showKavana && hebDate.omerNum == 1">יִ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 2">שְׂ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 3">מְ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 4">ח</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 5">וּ</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 21">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 6">וִ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 7">י</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 8">רַ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 9">נְּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 10">נ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 11">וּ</span></span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 22">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 12">לְ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 13">אֻ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 14">מִּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 15">י</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 16">ם</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 23">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 17">כִּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 18">י</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 24">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 19">תִ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 20">שְׁ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 21">פֹּ</span><span *ngIf="settingsService.showKavana  && hebDate.omerNum == 22" class="b">ו</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 23">ט</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 25">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 24">עַ</span><span [class.s]="settingsService.showKavana && hebDate.omerNum == 25">מִּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 26">י</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 27">ם</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 26">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 28">מִ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 29">י</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 30">שֹׁ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 31">ו</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 32">ר</span></span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 27">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 33">וּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 34">לְ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 35">אֻ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 36">מִּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 37">י</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 38">ם</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 28">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 39">בָּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 40">אָ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 41">רֶ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 42">ץ</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 29">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 43">תַּ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 44">נְ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 45">חֵ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 46">ם</span></span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 30">
+              <span [class.l]="settingsService.showKavana && hebDate.omerNum == 47">סֶ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 48">לָ</span><span [class.l]="settingsService.showKavana && hebDate.omerNum == 49">ה</span></span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 31">יוֹדוּךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 32">עַמִּים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 33">אֱלֹהִים</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 34">יוֹדוּךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 35">עַמִּים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 36">כֻּלָּם</span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 37">אֶרֶץ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 38">נָתְנָה</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 39">יְבוּלָהּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 40">יְבָרְכֵנוּ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 41">אֱלֹהִים</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 42">אֱלֹהֵינוּ</span>:&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 43">יְבָרְכֵנוּ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 44">אֱלֹהִים</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 45">וְיִירְאוּ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 46">אוֹתוֹ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 47">כָּל</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 48">אַפְסֵי</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 49">אָרֶץ</span>:
+        </p>
+        <br>
+        <p *ngIf="settingsService.nosach != 'te'">
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 1">אָנָּא</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 2">בְּכֹחַ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 3">גְּדֻלַּת</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 4">יְמִינֶךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 5">תַּתִּיר</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 6">צְרוּרָה</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 7" class="b">&nbsp;(אב&#34;ג ית&#34;ץ)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 8">קַבֵּל</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 9">רִנַּת</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 10">עַמֶּךָ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 11">שַׂגְּבֵנוּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 12">טַהֲרֵנוּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 13">נוֹרָא</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 14" class="b">&nbsp;(קר&#34;ע שט&#34;ן)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 15">נָא</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 16">גִבּוֹר</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 17">דּוֹרְשֵׁי</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 18">יִחוּדֶךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 19">כְּבָבַת</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 20">שָׁמְרֵם</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 21" class="b">&nbsp;(נג&#34;ד יכ&#34;ש)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 22">בָּרְכֵם</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 23">טַהֲרֵם</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 24">רַחֲמֵי</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 25">צִדְקָתֶךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 26">תָּמִיד</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 27">גָּמְלֵם</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 28" class="b">&nbsp;(בט&#34;ר צת&#34;ג)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 29">חָסִין</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 30">קָדוֹשׁ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 31">בְּרֹב</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 32">טוּבְךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 33">נַהֵל</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 34">עֲדָתֶךָ</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 35" class="b">&nbsp;(חק&#34;ב טנ&#34;ע)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 36">יָחִיד</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 37">גֵּאֶה</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 38">לְעַמְּךָ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 39">פְּנֵה</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 40">זוֹכְרֵי</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 41">קְדֻשָּׁתֶךָ</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 42" class="b">&nbsp;(יג&#34;ל פז&#34;ק)</span><br>
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 43">שַׁוְעָתֵנוּ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 44">קַבֵּל</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 45">וּשְׁמַע</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 46">צַעֲקָתֵנוּ</span>,&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 47">יוֹדֵעַ</span>&nbsp;
+          <span [class.b]="settingsService.showKavana && hebDate.omerNum == 48">תַּעֲלוּמוֹת</span>.
+          <span *ngIf="settingsService.showKavana  && hebDate.omerNum == 49" class="b">&nbsp;(שק&#34;ו צי&#34;ת)</span>
+          <br> בָּרוּךְ שֵׁם כְּבוֹד מַלְכוּתוֹ לְעוֹלָם וָעֶד:
+          <br>
+        </p>
+        <p *ngIf="settingsService.nosach == 'as' || settingsService.nosach == 'ask'" class="ion-text-justify">
+          <br> רִבּוֹנוֹ שֶׁל עוֹלָם, אַתָּה צִוִּיתָנוּ עַל יְדֵי מֹשֶׁה עַבְדֶּךָ לִסְפּוֹר סְפִירַת הָעוֹמֶר, כְּדֵי לְטַהֲרֵנוּ
+          מִקְּלִפּוֹתֵינוּ וּמִטֻּמְאוֹתֵינוּ, כְּמוֹ שֶׁכָּתַבְתָּ בְּתוֹרָתֶךָ. וּסְפַרְתֶּם לָכֶם מִמָּחֳרַת הַשַּׁבָּת
+          מִיּוֹם הֲבִיאֲכֶם אֶת־עֹמֶר הַתְּנוּפָה, שֶׁבַע שַׁבָּתוֹת תְּמִימֹת תִּהְיֶינָה. עַד מִמָּחֳרַת הַשַּׁבָּת הַשְּׁבִיעִת
+          תִּסְפְּרוּ חֲמִשִּׁים יוֹם. כְּדֵי שֶׁיּטָּהֲרוּ נַפְשׁוֹת עַמְּךָ יִשְׂרָאֵל מִזֻּהֲמָתָם. וְּבְכֵן יְהִי רָצוֹן
+          מִלְּפָנֶיךָ יְיָ אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ, שֶׁבִּזְכוּת סְפִירַת הָעוֹמֶר שֶׁסָּפַרְתִּי הַיּוֹם, יְתֻקַּן
+          מַה שֶׁפָּגַמְתִּי בִּסְפִירָה
+          <ion-text color="primary">{{hebDate.zohar}}</ion-text> וְאֶטָּהֵר וְאֶתְקַדֵּשׁ בִּקְדֻשָּׁה שֶׁל מַעְלָה, וַעל יְדֵי זֶה יֻשְׁפַּע שֶׁפַע רַב
+          בְּכָל הָעוֹלָמוֹת. וּלְתַקֵּן אֶת נַפְשׁוֹתֵינוּ, וְרוּחוֹתֵינוּ, וְנִשְׁמוֹתֵינוּ, מִכָּל סִיג וּפְגַם, וּלְטַהֲרֵנוּ
+          וּלְקַדְּשֵׁנוּ בִּקְדֻשָּׁתְךָ הָעֶלְיוֹנָה, אָמֵן סֶלָה.</p>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
+<app-footer></app-footer>
+<app-fab [showFab]="settingsService.showPicAtMale"></app-fab>

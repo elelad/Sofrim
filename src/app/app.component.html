@@ -9,7 +9,7 @@
     <ion-content>
       <ion-list class="ion-no-padding">
         <ion-menu-toggle *ngFor="let p of pages">
-          <ion-item details="none" [routerLink]="p.link" routerDirection="root">
+          <ion-item detail="true" [routerLink]="p.link" routerDirection="root">
             <ion-icon slot="start" name="{{p.icon}}" color="secondary"></ion-icon>
             <ion-label>{{p.title}}</ion-label>
           </ion-item>

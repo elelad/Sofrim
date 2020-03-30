@@ -21,12 +21,19 @@
     "@angular/router": "~9.1.0",
     "@ionic-native/app-version": "^5.23.0",
     "@ionic-native/badge": "^5.23.0",
+    "@ionic-native/code-push": "^5.23.0",
     "@ionic-native/core": "^5.0.0",
+    "@ionic-native/launch-review": "^5.23.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.7",
+    "cordova-launch-review": "^3.1.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-badge": "^0.8.8",
+    "cordova-plugin-code-push": "^1.12.0",
+    "cordova-plugin-file": "^4.3.3",
+    "cordova-plugin-file-transfer": "^1.6.3",
+    "cordova-plugin-zip": "^3.1.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
@@ -59,7 +66,12 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-badge": {},
-      "cordova-plugin-app-version": {}
+      "cordova-plugin-app-version": {},
+      "cordova-launch-review": {},
+      "cordova-plugin-code-push": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-zip": {}
     }
   }
 }

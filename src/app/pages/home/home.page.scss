@@ -1,0 +1,100 @@
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+ion-chip {
+    // --background: var(--ion-color-dark);
+    background-color: var(--ion-color-light);
+}
+
+#omerCard {
+    min-height: 220px;
+    width: 100%;
+    margin: 0px;
+    background-color: var(ion-color-light);
+}
+
+[dir="ltr"] .omerCard,
+[dir="rtl"] .omerCard {
+    margin: 0px;
+}
+
+.wrap {
+    white-space: normal;
+}
+
+.pickBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
+.dateCard {
+    width: 270px;
+    position: absolute;
+    right: 50%;
+    top: 50px;
+    transform: translate(50%);
+    z-index: 99999;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: var(ion-color-light);
+}
+
+.dayBtn {
+    //line-height: 0.5em;
+    /*min-width: 25px;
+    padding: 1px;
+    padding-top: 6px;
+    padding-bottom: 6px; 
+    border-radius: 50px;
+    
+    background-color: rgba(0,0,0,0.2); //map-get($colors,light);*/
+    margin: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+    font-size: 1rem;
+    min-width: 20px;
+    padding: 3px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: transparent;
+}
+
+.selectedDayBtn {
+    color: white;
+    min-width: 20px;
+    padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8); //map-get($colors,light);
+}
+
+.dateInput {
+    //
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    //max-width: 80px;
+}
+
+.dateInputBtn {
+    background-color: transparent;
+    border: none;
+    text-align: right;
+    min-height: 40px;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+}

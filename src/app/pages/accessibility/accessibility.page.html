@@ -1,9 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>accessibility</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'נגישות'" [accBtn]="false" [shareBtn]="false"></app-navbar>
 
 <ion-content>
-
+  <ion-card color="medium">
+    <ion-card-content>
+      נעשו מאמצים רבים בכדי להנגיש את האתר והאפליקציה.<br>
+      כעת האתר תואם את המלצות התקן הישראלי (ת"י 5568) לנגישות תכנים באינטרנט ברמת AA ואת המלצות מסמך WCAG 2.0 מאת ארגון
+      W3C.<br><br>
+      אם בכל זאת נמצאה תקלה או בעיה ניתן לפנות לכתובת המייל <a
+        href="mailto:elelad.dev@gmail.com&subject=בעיית נגישות באתר סופרים וזוכרים">elelad.dev@gmail.com</a>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+<app-footer></app-footer>
+<app-fab></app-fab>

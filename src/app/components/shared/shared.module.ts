@@ -7,6 +7,7 @@ import { AccMenuComponent } from '../acc-menu/acc-menu.component';
 import { FooterComponent } from '../footer/footer.component';
 import { FabComponent } from '../fab/fab.component';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,8 +16,19 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    RouterModule,
+    IonicModule.forRoot()
   ],
-  exports: [ShareMenuComponent, NavbarComponent, AccMenuComponent, FooterComponent, FabComponent],
+  exports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    IonicModule,
+    ShareMenuComponent,
+    NavbarComponent,
+    AccMenuComponent,
+    FooterComponent,
+    FabComponent,
+  ]
 })
 export class SharedModule { }

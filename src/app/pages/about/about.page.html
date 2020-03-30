@@ -1,9 +1,35 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>about</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'אודות'" [accBtn]="false" [shareBtn]="false"></app-navbar>
 
 <ion-content>
-
+  <ion-list class="ion-no-padding">
+    <!-- <ion-list-header>
+      אודות סופרים וזוכרים
+    </ion-list-header> -->
+    <ion-item>
+      <ion-icon slot="start" name="cog" color="secondary"></ion-icon>
+      <ion-label>גרסה</ion-label>
+      <span item-right>{{appVersion}}</span>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="bulb" color="secondary"></ion-icon>
+      <ion-label>ייזום והפקה</ion-label>
+      <span item-right>שבט שלם סניף מרכז, באר שבע</span>
+    </ion-item>
+    <ion-item button detail (click)="rateUs()">
+      <ion-icon slot="start" name="mail" color="secondary"></ion-icon>
+      <ion-label>דרגו אותנו</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="code" color="secondary"></ion-icon>
+      <ion-label>מפתח</ion-label>
+      <span item-right>אלעד אלרם</span>
+    </ion-item>
+    <ion-item detail href='mailto:elelad.dev@gmail.com' rel="_blank">
+      <ion-icon slot="start" name="mail" color="secondary"></ion-icon>
+      <ion-label>צור קשר</ion-label>
+      <span class="ion-padding" slot="end">elelad.dev@gmail.com</span>
+    </ion-item>
+  </ion-list>
 </ion-content>
+<app-footer></app-footer>
+<app-fab></app-fab>

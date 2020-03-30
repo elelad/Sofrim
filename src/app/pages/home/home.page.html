@@ -1,5 +1,171 @@
 <app-navbar [navTitle]="'סופרים וזוכרים'"></app-navbar>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="page">
+    <div *ngIf="plt.is('desktop') || plt.is('mobileweb')" class="ion-text-center">
+      <br>
+      <ion-chip color="primary">
+        <ion-icon name="notifications" color="secondary"></ion-icon>
+        <ion-label>התראות פעילות באפליקציה המלאה בלבד</ion-label>
+      </ion-chip>
+      <br>
+      <a href="https://itunes.apple.com/us/app/%D7%A1%D7%95%D7%A4%D7%A8%D7%99%D7%9D-%D7%95%D7%96%D7%95%D7%9B%D7%A8%D7%99%D7%9D-%D7%A1%D7%A4%D7%99%D7%A8%D7%AA-%D7%94%D7%A2%D7%95%D7%9E%D7%A8/id1220693649?mt=8"
+        target="blank"
+        style="display:inline-block;overflow:hidden;background:url(/assets/appstore.svg) no-repeat;width:180px;height:50px;background-size:contain;background-position:center;margin:7px;"></a>
+      <a href='https://play.google.com/store/apps/details?id=com.elelad.sofrim' target="blank"
+        style="display:inline-block;overflow:hidden;background:url(/assets/google-play.png) no-repeat;width:180px;height:50px;background-size:contain;background-position:center;margin:7px;"></a>
+      <br>
+    </div>
+    <div *ngIf="showNextYearReminderBtn || !hebDate.isOmer" class="ion-text-center ion-margin">
+      <ion-button color="darker" [routerLink]="'/reminder'" routerDirection="root">
+        <ion-icon slot="start" color="primary" name="notifications"></ion-icon>
+        תזכורת להורדה בשנה הבאה?
+      </ion-button>
+    </div>
 
+    <ion-card id="omerCard">
+      <ion-card-header class="ion-text-end">
+        <span>{{hebDate.hebDate}}</span>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <br>
+        <h1 class="rtl wrap">{{hebDate.omer}}</h1>
+        <br>
+        <div *ngIf="!hebDate.isOmer">
+          <h3>אבל טוב שהגעת!</h3>
+          <h3>נשמח לעזרה בהפצת הבשורה:</h3>
+          <br>
+          <ion-button
+            href='https://www.facebook.com/dialog/share?app_id=652670708251189&display=popup&href=https://www.sofrim.co.il&quote= הכן סמארטפונך לעומר! אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז"ל'
+            color="facebook" target="_blank" class="blur">
+            <ion-icon slot="start" name="logo-facebook"></ion-icon>
+            facebook
+          </ion-button>
+          <ion-button
+            href="https://api.whatsapp.com/send?text=*הכן סמארטפונך לעומר!*  אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז&#34;ל. _להורדה: https://www.sofrim.co.il_"
+            color="whatsapp" (click)="true" class="blur" target="_blank">
+            <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
+            whatsapp
+          </ion-button>
+        </div>
+        <br>
+        <ion-button *ngIf="hebDate.isOmer" color="primary" [routerLink]="'/full'" routerDirection="root" class="blur">
+          לנוסח המלא
+        </ion-button>
+      </ion-card-content>
+      <ion-card-header class="ion-no-padding">
+        <ion-item lines="none">
+          <ion-button color="dark" fill="clear" expand="full" (click)="setPick()" class="ion-text-start" tabindex="0">
+            בדוק בתאריך&nbsp;&nbsp;&nbsp;{{getDate()[2]}}/{{getDate()[1]}}/{{getDate()[0]}}
+          </ion-button>
+          <ion-button fill="clear" slot="end" size="small" (click)="getToday()" color="secondary" class="blur">
+            <ion-icon slot="icon-only" name="refresh"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-card-header>
+    </ion-card>
+
+    <!--</ion-list>-->
+
+  </div>
 </ion-content>
+<app-footer></app-footer>
+<app-fab></app-fab>
+
+<div *ngIf="pick" class="pickBack" (click)="setPick()">
+</div>
+<ion-card *ngIf="pick" class="dateCard">
+  <ion-card-header color="primary">בחר תאריך</ion-card-header>
+  <ion-card-content class="ion-no-padding ion-padding-horizontal">
+    <ion-grid class="ion-text-center">
+      <ion-row>
+        <ion-col size="auto">
+          <ion-button fill="clear" color="secondary" (click)="yearDown()">
+            <ion-icon slot="icon-only" class="larger" name="chevron-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col class="ion-text-center ion-align-self-center">
+          {{thisYear}}
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button fill="clear" color="secondary" (click)="yearUp()">
+            <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="auto">
+          <ion-button fill="clear" color="secondary" (click)="monthDown()">
+            <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col class="ion-text-center ion-align-self-center">
+          {{months[userMonth]}}
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button fill="clear" color="secondary" (click)="monthUp()">
+            <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let day of weekDays">
+          <strong>{{day}}</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week1">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week2">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week3">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week4">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week5">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let weekDay of week6">
+          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
+            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+            {{weekDay}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+  <ion-card-header class="ion-no-padding ion-text-center">
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding">
+        <ion-button color="primary" fill="clear" (click)="setPick()">ביטול</ion-button>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <ion-button color="primary" fill="clear" (click)="setPickResult()">שמירה</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card-header>
+
+</ion-card>

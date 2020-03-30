@@ -13,12 +13,8 @@
     font-family: 'Arimo';
     font-style: normal;
     font-weight: normal;
-    src: url('./assets/fonts/arimo.woff2') format('woff2');
+    src: url('./assets/fonts/Arimo-Regular.ttf');
 }
-
-* {
-    font-family: 'Arimo, roboto';
-  }
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -40,6 +36,18 @@
 
 :root {
     --app-direction: rtl;
-    --ion-font-family:  'Arimo'; 
-    font-family:  'Arimo', 'roboto'!important;
+    --ion-font-family: 'Arimo' !important;
+    font-family: 'Arimo' !important;
+    // --ion-font-family: 'Noto', 'Noto Heb' !important;
+    // font-family: 'Noto', 'Noto Heb' !important;
+}
+
+.ios {
+    --ion-font-family: 'Arimo' !important;
+    font-family: 'Arimo' !important;
+}
+
+.md {
+    --ion-font-family: 'Arimo' !important;
+    font-family: 'Arimo' !important;
 }

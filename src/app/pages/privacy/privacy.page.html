@@ -1,9 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>privacy</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar [navTitle]="'פרטיות'" [accBtn]="false" [shareBtn]="false"></app-navbar>
+
 
 <ion-content>
-
+  <ion-card color="medium">
+    <ion-card-content class="ion-text-center">
+      האפליקציה לא אוספת את המידע הפרטי שלך.<br>
+      ההעדפות וההגדרות נשמרות על המכשיר בלבד.
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+<app-footer></app-footer>
+<app-fab></app-fab>
