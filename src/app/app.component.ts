@@ -6,6 +6,8 @@ import { MenuController, NavController, Platform } from '@ionic/angular';
 import { HebDateService } from './services/heb-date.service';
 import { NotificationsService } from './services/notifications.service';
 import { CodePush, InstallMode } from '@ionic-native/code-push/ngx';
+import { asapScheduler } from 'rxjs';
+import { C } from './constants/constants';
 
 
 @Component({
@@ -45,6 +47,9 @@ export class AppComponent {
           console.log('is cordova');
           this.badge.clear(); // clear badge
           this.notificationsService.initNotifications(msg === 'done'); // set notifications for the omer
+          asapScheduler.schedule(() => {
+            this.regidaterListeners();
+          }, 500);
         }
       }).catch((e) => {
         // alertuser
@@ -91,6 +96,28 @@ export class AppComponent {
       //     }, 20);
       //   });
       // }
+    });
+  }
+
+  regidaterListeners() {
+
+    this.notificationsService.lNotification.on('snooze', (notification: any, eopts) => {// + i
+      // console.log(notification);
+      this.notificationsService.snoozeAlert(notification.id - 1);
+    });
+    // }
+    this.notificationsService.lNotification.on('click', (n, s) => {
+      console.log('notification clicked');
+      if (n.id >= 700 && n.id < 800) {
+        this.navCtrl.navigateRoot(['/remivder']);
+      }
+      this.badge.clear().then((b) => {
+        console.log('badge');
+        // console.log(b);
+      }).catch((e) => {
+        console.log('badge error');
+        console.log(e);
+      });
     });
   }
 

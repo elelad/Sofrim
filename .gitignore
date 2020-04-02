@@ -29,3 +29,10 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+firebase.json
+build.json
+codepush.txt
+google-services.json
+package-lock.json
+.firebaserc

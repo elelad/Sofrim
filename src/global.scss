@@ -45,6 +45,14 @@
 .ios {
     --ion-font-family: 'Arimo' !important;
     font-family: 'Arimo' !important;
+
+    ion-select{
+        direction: ltr;
+    }
+
+    ion-toggle{
+        transform: rotate(180deg);
+    }
 }
 
 .md {

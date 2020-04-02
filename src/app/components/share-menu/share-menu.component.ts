@@ -3,6 +3,7 @@ import { HebDateService } from '../../services/heb-date.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastController, PopoverController } from '@ionic/angular';
 import { SettingsService } from '../../services/settings.service';
+import { C } from '../../constants/constants';
 
 @Component({
   selector: 'app-share-menu',
@@ -11,9 +12,9 @@ import { SettingsService } from '../../services/settings.service';
 })
 export class ShareMenuComponent implements OnInit {
 
-  subjectMsg = 'צדיק! עומר? כבר ספרת?';
+  subjectMsg = C.defaultShareMsg;
   private url = 'sofrim.co.il';
-  private onelink = 'http://onelink.to/sofrim';
+  private onelink = C.onelink;
   private urlMsg: string = '\n לנוסח המלא: \n' + this.url;
   newUrlMsg: string = '\n להורדה: \n' + this.onelink;
 

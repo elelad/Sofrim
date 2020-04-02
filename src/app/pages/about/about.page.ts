@@ -3,6 +3,8 @@ import { Platform } from '@ionic/angular';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { SettingsService } from '../../services/settings.service';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { C } from '../../constants/constants';
 
 @Component({
   selector: 'app-about',
@@ -10,9 +12,11 @@ import { SettingsService } from '../../services/settings.service';
   styleUrls: ['./about.page.scss'],
 })
 export class AboutPage implements OnInit {
-  appVersion = '1.6.7';
+  appVersion = '1.7.1';
 
-  constructor(private plt: Platform, private appV: AppVersion, private launchReview: LaunchReview, private settingsService: SettingsService) {
+  constructor(
+    public plt: Platform, private appV: AppVersion, private launchReview: LaunchReview,
+    private settingsService: SettingsService, private socialSharing: SocialSharing) {
   }
 
   ngOnInit() {
@@ -21,6 +25,10 @@ export class AboutPage implements OnInit {
 
   rateUs() {
     this.launchReview.launch(this.settingsService.appId).catch(err => console.log(err));
+  }
+
+  mail() {
+    this.socialSharing.shareViaEmail('', '', [C.mail]).catch(err => console.log(err));
   }
 
 }

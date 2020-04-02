@@ -9,7 +9,15 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "copy": "cpx 'index-for-web/**.{html,js}' ./public  --clean && cpx 'www/**/*.{js,css,jpg,jpeg,png,json,eot,scss,ttf,woff,woff2,ico,svg}' ./public  --clean",
+    "copy-ios": "cpx 'www/**/*.{js,css,jpg,jpeg,png,json,eot,scss,ttf,woff,woff2,ico,svg}' ./platforms/ios/www  --clean",
+    "ios": "ng run app:ionic-cordova-build --platform=ios && npm run copy-ios && cordova prepare ios",
+    "ios-p": "ng run app:ionic-cordova-build:production --platform=ios && npm run copy-ios  && cordova prepare ios",
+    "ios-lr": "ionic cordova run ios -l --external",
+    "sign-and": "cordova build android --release --buildConfig build.json",
+    "rsa": "ionic cordova run android --prod --release --buildConfig build.json",
+    "bsa": "ionic cordova build android --prod --release --buildConfig build.json"
   },
   "private": true,
   "dependencies": {
@@ -24,17 +32,33 @@
     "@ionic-native/code-push": "^5.23.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/launch-review": "^5.23.0",
+    "@ionic-native/social-sharing": "^5.23.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.7",
+    "code-push": "^3.0.1",
+    "cordova-android": "^8.1.0",
+    "cordova-ios": "^5.1.1",
     "cordova-launch-review": "^3.1.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-code-push": "^1.12.0",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-file": "^4.3.3",
     "cordova-plugin-file-transfer": "^1.6.3",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
+    "cordova-plugin-ionic-webview": "^4.1.3",
+    "cordova-plugin-local-notification": "^0.9.0-beta.2",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-x-socialsharing": "^5.6.4",
     "cordova-plugin-zip": "^3.1.0",
     "core-js": "^2.5.4",
+    "cpx": "^1.5.0",
+    "es6-promise-plugin": "^4.2.2",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -71,7 +95,22 @@
       "cordova-plugin-code-push": {},
       "cordova-plugin-file": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-zip": {}
-    }
+      "cordova-plugin-zip": {},
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      }
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ]
   }
 }

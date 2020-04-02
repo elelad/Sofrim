@@ -41,6 +41,14 @@ export class C {
     static readonly hebWeekDays: string[] = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
     static readonly lzichro: string = '&nbsp;&nbsp;&nbsp;לזכרו של יקירינו רועי מינץ ז"ל';
     static readonly localSofrimNextYearReminder: string = 'sofrimNextYearReminder';
+    static readonly onelink = 'http://onelink.to/sofrim';
+    static readonly defaultShareMsg = 'צדיק! עומר? כבר ספרת?';
+    static readonly downloadShareMsg = 'הכן סמארטפונך לעומר! אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז"ל';
+    static readonly toDownload = 'להורדה:';
+    static readonly mail = 'elelad.dev@gmail.com';
+    static readonly smallIconUrl = 'res://noti.png';
+    static readonly iconUrl = 'file://logo.png';
+    // static readonly iconUrl = 'http://climberindonesia.com/assets/icon/ionicons-2.0.1/png/512/android-chat.png';
 
     /*static readonly omerDays: OmerDay[] = [
         new OmerDay(1, 16, "Nisan", "היום יום אחד", "", 'ט"ז בניסן', "הַאידַּאנָא חַד יוֹמָא בְּעֻמרָא"),

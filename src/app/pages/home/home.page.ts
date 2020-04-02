@@ -1,10 +1,13 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { NavController, AlertController, Platform } from '@ionic/angular';
+// tslint:disable: max-line-length
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { AlertController, Platform } from '@ionic/angular';
+import { C } from '../../constants/constants';
 import { HebDateService } from '../../services/heb-date.service';
 import { SettingsService } from '../../services/settings.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { C } from '../../constants/constants';
-import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'app-home',
@@ -31,52 +34,37 @@ export class HomePage implements OnInit, AfterViewInit {
   week5: number[] = [];
   week6: number[] = [];
   showNextYearReminderBtn = false;
+  showRemindMeAtBtn = false;
 
   constructor(
-    public hebDate: HebDateService, private alertController: AlertController, private sanitizer: DomSanitizer,
-    public plt: Platform, private settingsService: SettingsService, private launchReview: LaunchReview) {
+    public hebDate: HebDateService, private alertController: AlertController, private sanitizer: DomSanitizer, public notificationsService: NotificationsService,
+    public plt: Platform, private settingsService: SettingsService, private launchReview: LaunchReview, private socialSharing: SocialSharing) {
 
   }
 
   ngOnInit() {
-    console.log(this.dateInput);
     if (this.plt.is('ios') || this.plt.is('android')) {
-      // this.feedback();
       this.rateUs();
     } else {
       this.offerDownlad();
     }
     this.getToday();
-    // this.getOmerFromDateInput();
     const now = new Date(Date.now());
     this.thisYear = now.getFullYear();
     this.userMonth = now.getMonth();
     this.userDay = now.getDate();
     this.buildMonthArray();
-    // this.plt.ready().then(() => {
-    //   console.log(this.plt.versions());
-    //   if (this.settingsService.androidFourVersion()) {
-    //     const page1El: any = document.getElementsByTagName('page-page1');
-    //     let fix: HTMLCollection = page1El.item(0).getElementsByClassName('fixed-content');
-    //     fix.item(0).setAttribute('style', 'margin-top: 56px;margin-bottom: 56px;');
-    //     fix = page1El.item(0).getElementsByClassName('scroll-content');
-    //     fix.item(0).setAttribute('style', 'margin-top: 56px;margin-bottom: 56px;');
-    //   }
-    // });
     if (!localStorage.getItem(C.localSofrimNextYearReminder) && this.hebDate.omerNum > 40) {
       this.showNextYearReminderBtn = true;
     }
 
-    // this.getToday();
+    const hours = now.getHours();
+    this.showRemindMeAtBtn = (hours >= (this.settingsService.notificationTime + 18));
+    console.log('this.showRemindMeAtBtn', this.showRemindMeAtBtn, this.settingsService.notificationTime + 18, hours);
   }
 
   ngAfterViewInit() {
     this.datePickerEl = document.getElementById('item');
-    // document.body.addEventListener('keyup', (e) => {
-    //   if (e.keyCode == 27) { // escape key maps to keycode `27`
-    //     this.setPickFalse();
-    //   }
-    // });
   }
 
   sanitize() {
@@ -84,9 +72,15 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   post() {
-    // tslint:disable-next-line: max-line-length
     const urlPop = 'https://www.facebook.com/dialog/share?app_id=652670708251189&display=popup&href=https://www.sofrim.co.il&quote= הכן סמארטפונך לעומר! אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז"ל';
     window.open(urlPop, 'pop', 'width=600, height=400, scrollbars=no, menubar=no, location=no'); //
+  }
+
+  share() {
+    this.socialSharing.shareWithOptions({
+      message: C.downloadShareMsg,
+      url: C.onelink
+    }).catch(err => console.log(err));
   }
 
   ionViewWillEnter() {
@@ -260,16 +254,6 @@ export class HomePage implements OnInit, AfterViewInit {
     this.hebDate.getOmer(noon.getTime());
   }
 
-  /* showPicker() {
-    DatePicker.show({
-      date: new Date(),
-      mode: 'date'
-    }).then(
-      date => { console.log('Got date: ', date) },
-      err => console.log('Error occurred while getting date: ', err)
-      );
-  } */
-
   setPick() {
     (this.pick) ? this.pick = false : this.pick = true;
     const blur = document.getElementsByClassName('blur');
@@ -282,8 +266,6 @@ export class HomePage implements OnInit, AfterViewInit {
       }
 
     }
-    /// blur[1].add
-    // console.log(this.pick);
   }
 
   setPickFalse() {
@@ -320,7 +302,7 @@ export class HomePage implements OnInit, AfterViewInit {
           message: 'יש לך דקה לדרג אותנו?',
           buttons: [
             {
-              text: 'ביטול',
+              text: 'לא כרגע',
               role: 'cancel',
               handler: () => {
                 localStorage.setItem('sofrimOfferRateUs', (now + 259200000).toString());
@@ -330,77 +312,13 @@ export class HomePage implements OnInit, AfterViewInit {
               text: 'בשמחה',
               handler: () => {
                 this.launchReview.launch(this.settingsService.appId).catch(err => console.log(err));
+                localStorage.setItem('sofrimOfferRateUs', (now + 99999999999).toString());
               }
             }
           ]
         });
+        alert.present();
       }
     }
   }
-
-  // feedback() {
-  //   let feedbackDone = false;
-  //   localStorage.getItem('sofrimFeedback') ? feedbackDone = (localStorage.getItem('sofrimFeedback') === 'true') : feedbackDone = false;
-  //   console.log('feedbackDone: ' + feedbackDone);
-  //   if (!feedbackDone) {
-  //     let visits = 0;
-  //     let lastFeeedbackReq = 0;
-  //     let allowFeedbackReq = false;
-  //     console.log(localStorage.getItem('sofrimFeedbackVisits'));
-  //     localStorage.getItem('sofrimFeedbackVisits') ? visits = +localStorage.getItem('sofrimFeedbackVisits') : visits = 0;
-  //     (localStorage.getItem('sofrimFeedbackLater')) ? lastFeeedbackReq = +localStorage.getItem('sofrimFeedbackLater') : lastFeeedbackReq = 0;
-  //     visits = visits + 1;
-  //     console.log('visits: ' + visits);
-  //     localStorage.setItem('sofrimFeedbackVisits', visits.toString());
-  //     const now = new Date(Date.now()).getTime();
-  //     console.log(lastFeeedbackReq + 259200000);
-  //     console.log(new Date(lastFeeedbackReq + 259200000).toLocaleDateString());
-  //     if (lastFeeedbackReq === 0 || lastFeeedbackReq + 259200000 < now) {// cCheck if it's been 3 days since your last visit
-  //       allowFeedbackReq = true;
-  //     }
-  //     console.log('allowFeedbackReq: ' + allowFeedbackReq);
-  //     if (visits > 3 && allowFeedbackReq) {// in the 4th visit
-  //       this.showFeedbackAlert().then(() => {
-  //         // this.navCtrl.push('Feedback');
-  //       }).catch(e => {
-  //         visits = 0;
-  //         localStorage.setItem('sofrimFeedbackVisits', visits.toString());
-  //         localStorage.setItem('sofrimFeedbackLater', now.toString());
-  //       });
-  //     }
-  //   } else if (this.plt.is('ios')) {
-  //     const now = new Date(Date.now()).getTime();
-  //     let timeToShowPopup = 0;
-  //     if (localStorage.getItem('sofrimOfferRateUs')) {
-  //       timeToShowPopup = +localStorage.getItem('sofrimOfferRateUs');
-  //     }
-  //     if (timeToShowPopup < now && timeToShowPopup > 0 && this.launchReview.isRatingSupported()) {
-  //       this.launchReview.rating();
-  //     }
-
-  //   }
-  // }
-
-  // showFeedbackAlert() {
-  //   return new Promise(async (res, rej) => {
-  //     const alert = await this.alertController.create({
-  //       header: 'משוב',
-  //       subHeader: 'אפשר דקה מזמנך למשוב קצר?',
-  //       buttons: [{
-  //         text: 'כן',
-  //         handler: (data) => {
-  //           res('UserCancel');
-  //         }
-  //       },
-  //       {
-  //         text: 'לא כרגע',
-  //         handler: () => {
-  //           rej('UserCancel');
-  //         }
-  //       }]
-  //     });
-  //     alert.present();
-  //   });
-  // }
-
 }

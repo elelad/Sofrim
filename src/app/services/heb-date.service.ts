@@ -64,7 +64,7 @@ export class HebDateService {
           // console.log(omerForAllYear);
           localStorage.setItem('omer' + geoYear, JSON.stringify(omerForAllYear)); // put data in ocal storage
           // console.log(new Date(omerForAllYear[2]).toString());
-          this.notificationsService.setNotificationForAllOmer();
+          // this.notificationsService.setNotificationForAllOmer();
         }
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status !== 200) {
           console.log('xhr no response');
@@ -94,7 +94,7 @@ export class HebDateService {
           // console.log(omerForAllYear);
           localStorage.setItem('omer' + geoYear, JSON.stringify(omerForAllYear)); // put data in ocal storage
           // console.log(new Date(omerForAllYear[2]).toString());
-          this.notificationsService.setNotificationForAllOmer();
+          // this.notificationsService.setNotificationForAllOmer();
         }
       };
       xhr.send();

@@ -5,6 +5,7 @@ import { Badge } from '@ionic-native/badge/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { CodePush } from '@ionic-native/code-push/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicRouteStrategy } from '@ionic/angular';
@@ -25,6 +26,7 @@ import { SharedModule } from './components/shared/shared.module';
     AppVersion,
     LaunchReview,
     CodePush,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

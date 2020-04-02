@@ -35,21 +35,30 @@
           <h3>אבל טוב שהגעת!</h3>
           <h3>נשמח לעזרה בהפצת הבשורה:</h3>
           <br>
-          <ion-button
-            href='https://www.facebook.com/dialog/share?app_id=652670708251189&display=popup&href=https://www.sofrim.co.il&quote= הכן סמארטפונך לעומר! אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז"ל'
-            color="facebook" target="_blank" class="blur">
-            <ion-icon slot="start" name="logo-facebook"></ion-icon>
-            facebook
-          </ion-button>
-          <ion-button
-            href="https://api.whatsapp.com/send?text=*הכן סמארטפונך לעומר!*  אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז&#34;ל. _להורדה: https://www.sofrim.co.il_"
-            color="whatsapp" (click)="true" class="blur" target="_blank">
-            <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
-            whatsapp
-          </ion-button>
+          <div *ngIf="plt.is('desktop') || plt.is('mobileweb'); else elseBlock" class="ion-text-center">
+            <ion-button
+              href='https://www.facebook.com/dialog/share?app_id=652670708251189&display=popup&href=https://www.sofrim.co.il&quote= הכן סמארטפונך לעומר! אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז"ל'
+              color="facebook" target="_blank" class="blur">
+              <ion-icon slot="start" name="logo-facebook"></ion-icon>
+              facebook
+            </ion-button>
+            <ion-button
+              href="https://api.whatsapp.com/send?text=*הכן סמארטפונך לעומר!*  אפליקציית תזכורות לספירת העומר לזכרו של רועי מינץ ז&#34;ל. _להורדה: https://www.sofrim.co.il_"
+              color="whatsapp" (click)="true" class="blur" target="_blank">
+              <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
+              whatsapp
+            </ion-button>
+          </div>
+          <ng-template #elseBlock>
+            <ion-button color="secondary" (click)="share()">
+              <ion-icon slot="start" name="share-social"></ion-icon>
+              שיתוף
+            </ion-button>
+          </ng-template>
         </div>
         <br>
-        <ion-button *ngIf="hebDate.isOmer" color="primary" [routerLink]="'/full'" routerDirection="root" class="blur">
+        <ion-button *ngIf="hebDate.isOmer" color="secondary" [routerLink]="'/full'" routerDirection="root" class="blur">
+          <ion-icon slot="start" name="book"></ion-icon>
           לנוסח המלא
         </ion-button>
       </ion-card-content>
@@ -64,6 +73,13 @@
         </ion-item>
       </ion-card-header>
     </ion-card>
+
+    <div *ngIf="plt.is('cordova') && showRemindMeAtBtn && hebDate.isOmer" class="ion-text-center ion-margin">
+      <ion-button color="darker" (click)="notificationsService.snoozeAlert(hebDate.omerNum - 1)">
+        <ion-icon slot="start" color="primary" name="notifications"></ion-icon>
+        הזכר לי בעוד
+      </ion-button>
+    </div>
 
     <!--</ion-list>-->
 
@@ -115,43 +131,43 @@
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week1">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week2">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week3">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week4">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week5">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col *ngFor="let weekDay of week6">
-          <ion-button [color]="(weekDay === userDay) ? 'light' : 'dark'" [ngClass]="{'selectedDayBtn': weekDay == userDay}"
-            shape="round" size="small" fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
+          <ion-button color="white" [ngClass]="{'selectedDayBtn': weekDay == userDay}" shape="round" size="small"
+            fill="clear" class="dayBtn" *ngIf="weekDay != 0" (click)="setUserDay(weekDay)">
             {{weekDay}}</ion-button>
         </ion-col>
       </ion-row>

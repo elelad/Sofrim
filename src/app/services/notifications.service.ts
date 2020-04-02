@@ -3,6 +3,7 @@ import { SettingsService } from './settings.service';
 import { ToastController, Platform, AlertController } from '@ionic/angular';
 import { C } from '../constants/constants';
 import { Badge } from '@ionic-native/badge/ngx';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 declare var cordova: any;
 
@@ -12,8 +13,8 @@ declare var cordova: any;
 export class NotificationsService {
   private delayTime = 0;
   private comingNotification = 0;
-  public comingNotificationMsg = 'אין';
-  private lNotification: any;
+  // public comingNotificationMsg: BehaviorSubject<string> = new BehaviorSubject('אין');
+  public lNotification: any;
   public badgeSupported = false;
 
   constructor(
@@ -24,12 +25,13 @@ export class NotificationsService {
   initNotifications(force: boolean = false) {
     this.plt.ready().then(() => {
       this.lNotification = cordova.plugins.notification.local;
-      if (this.plt.is('ios')) {
-        this.lNotification.addActions('asnooze', [{ id: 'snooze', title: 'נודניק', launch: true }]);
-      }
-      this.regidaterListeners();
+      // if (this.plt.is('ios')) {
+      //   // this.lNotification.addActions('asnooze', [{ id: 'snooze', title: 'aaa', launch: true }]);
+      //   this.lNotification.addActionGroup('asnooze', [{ id: 'snooze', title: 'aaa', launch: true }]);
+      // }
+      // this.regidaterListeners();
       this.initBadge();
-      this.checkPermissionAndSetAll(force);
+      this.checkPermissionAndSetAll(force, false);
       // this.getNewNote(); // for test
       this.setNextYearOfferNotifications();
     });
@@ -83,9 +85,6 @@ export class NotificationsService {
         console.log(e);
       });
     });
-    setTimeout(() => {
-      this.lNotification.fireQueuedEvents();
-    }, 500);
   }
 
 
@@ -100,8 +99,8 @@ export class NotificationsService {
       launch: false,
       foreground: true,
       priority: 2,
-      icon: 'file://logo.png',
-      smallIcon: 'res://noti.png',
+      icon: C.iconUrl,
+      smallIcon: C.smallIconUrl,
       badge: (this.settingsService.showBadge) ? 1 : null
 
     });
@@ -127,30 +126,36 @@ export class NotificationsService {
       title: 'סופרים וזוכרים',
       text: 'הודעת ניסיון - הכפתור לא יופיע באפליקציה הסופית',
       at: new Date(Date.now() + 0 * 60000),
-      icon: 'file://logo.png',
-      smallIcon: 'res://noti.png',
+      icon: C.iconUrl,
+      smallIcon: C.smallIconUrl,
       badge: (this.settingsService.showBadge) ? 1 : null
     });
     console.log('test notification sent');
   }
 
-  checkPermissionAndSetAll(force: boolean = false) {
+  checkPermissionAndSetAll(force: boolean = false, toast: boolean = true) {
     if (this.plt.is('cordova')) {
       (force) ? console.log('force') : console.log('not force');
       this.lNotification.hasPermission((has: boolean) => {
         if (has) {
-          console.log('has: ' + has);
-          this.setIfNoNotifications(force);
+          this.setIfNoNotifications(force, toast);
         } else {
-          console.log('has: ' + has);
-          this.settingsService.setAlowNotification();
-          this.setIfNoNotifications(force);
+          this.lNotification.requestPermission((granted) => {
+            if (this.lNotification.hasPermission) {
+              this.setIfNoNotifications(force);
+            }
+            this.lNotification.hasPermission((hass: boolean) => {
+              if (hass) {
+                this.setIfNoNotifications(force, toast);
+              }
+            });
+          });
         }
-      }); //
+      });
     }
   }
 
-  setIfNoNotifications(force: boolean = false) {
+  setIfNoNotifications(force: boolean = false, toast: boolean = true) {
     console.log('setIfNoNotifications');
     if (this.plt.is('cordova')) {
       this.lNotification.getAll((allScheduled) => {
@@ -158,7 +163,7 @@ export class NotificationsService {
           console.log('allScheduled: no need to update');
           this.getComingNotification();
         } else {
-          this.setNotificationForAllOmer();
+          this.setNotificationForAllOmer(toast);
         }
       });
     }
@@ -196,8 +201,8 @@ export class NotificationsService {
               actions: this.getActions(),
               trigger: { in: data, unit: 'minute' }, // second
               badge: (this.settingsService.showBadge) ? notification.badge : null,
-              icon: 'file://logo.png',
-              smallIcon: 'res://noti.png',
+              icon: C.iconUrl,
+              smallIcon: C.smallIconUrl,
               foreground: true,
               priority: 2
             }));
@@ -225,14 +230,14 @@ export class NotificationsService {
   }
 
   getActions() {
-    if (this.plt.is('android')) {
-      return [{ id: 'snooze', title: 'נודניק', launch: true }];
-    }
-    return 'asnooze';
+    // if (this.plt.is('android')) {
+    return [{ id: 'snooze', title: 'נודניק', launch: true }];
+    // }
+    // return 'asnooze';
   }
 
   setNotificationForAllOmer(toast: boolean = true) {
-    if (this.lNotification) {
+    if (this.lNotification && this.settingsService.allowNotification) {
       this.delayTime = this.settingsService.notificationTime * 60 * 60 * 1000;
       const nowDate = new Date(Date.now());
       const geoYear = nowDate.getFullYear();
@@ -241,8 +246,8 @@ export class NotificationsService {
       if (localStorage.getItem('omer' + geoYear)) { omerDays = JSON.parse(localStorage.getItem('omer' + geoYear)); }
       const notificationArray: {}[] = [];
       const consoleArray: {}[] = [];
-      console.log('--- omerDays ---');
-      console.table(omerDays);
+      // console.log('--- omerDays ---');
+      // console.table(omerDays);
       if (omerDays) {
         omerDays.forEach((day: any, index) => {
           let isShabat = false;
@@ -262,8 +267,9 @@ export class NotificationsService {
               trigger: { at: new Date(day + this.delayTime) },
               foreground: true,
               priority: 2,
-              icon: 'file://logo.png',
-              smallIcon: 'res://noti.png',
+              icon: C.iconUrl,
+              iconType: 'png',
+              smallIcon: C.smallIconUrl,
               badge: (this.settingsService.showBadge) ? index + 1 : null,
             }));
             const consoleDate = new Date(day + this.delayTime);
@@ -284,13 +290,13 @@ export class NotificationsService {
               priority: 2,
               trigger: { at: new Date(day + 2.5 * 60 * 60 * 1000) }, // 20:30
               icon: 'file://favImage.jpg',
-              smallIcon: 'res://noti.png'
+              smallIcon: C.smallIconUrl
             }));
           }
         });
       }
-      console.log('notificationArray:');
-      console.table(notificationArray);
+      // console.log('notificationArray:');
+      // console.table(notificationArray);
       if (toast) {
         this.toast('התראות הוגדרו');
       }
@@ -318,7 +324,7 @@ export class NotificationsService {
       this.lNotification.cancelAll((e) => {
         console.log('all notification removed');
         this.toast('התראות בוטלו');
-        this.comingNotificationMsg = 'אין';
+        this.settingsService.comingNotificationMsg.next('אין');
       });
     } catch (e) {
       console.log(e);
@@ -327,13 +333,13 @@ export class NotificationsService {
   }
 
   getComingNotification() {
-    if (this.plt.is('cordova')) {
+    if (this.plt.is('cordova') && this.settingsService.allowNotification) {
       this.comingNotification = 0;
       this.lNotification.getAll((n) => {
         console.log('getComingNotification');
-        // console.table(n);
+        console.table(n);
         const now = (Math.floor(Date.now() / 1000));
-        n.forEach((noti) => {
+        for (const noti of n) {
           if (this.comingNotification === 0) {
             console.log(typeof (noti.trigger.at));
             this.comingNotification = noti.trigger.at;
@@ -345,21 +351,22 @@ export class NotificationsService {
               console.log('noti.trigger.at: ' + noti.trigger.at);
               console.log('now: ' + now);
               this.comingNotification = noti.trigger.at;
-              // coming = noti.at;
             }
           }
-        });
-        // this.comingNotification = coming;
+        }
         const comingDate = new Date(this.comingNotification); // * 1000
         if (this.comingNotification !== 0) {
-          this.comingNotificationMsg =
-            comingDate.getDate() + '/' +
+          const comingString = comingDate.getDate() + '/' +
             (comingDate.getMonth() + 1) + '/' +
             comingDate.getFullYear() + ' ' + comingDate.getHours() + ':00';
+          this.settingsService.comingNotificationMsg.next(comingString);
+
         }
-        console.log('this.comingNotification:' + comingDate.toString());
-        console.log(this.comingNotificationMsg);
+        // console.log('this.comingNotification:' + comingDate.toString());
+        // console.log(this.settingsService.comingNotificationMsg.value);
       });
+    } else if (this.plt.is('cordova')) {
+      this.settingsService.comingNotificationMsg.next('אין');
     }
   }
 
@@ -400,8 +407,8 @@ export class NotificationsService {
               foreground: true,
               priority: 2,
               trigger: { at: new Date(omerDays[45 + i] + 2.5 * 60 * 60 * 1000) }, // 20:30
-              icon: 'file://logo.png',
-              smallIcon: 'res://noti.png'
+              icon: C.iconUrl,
+              smallIcon: C.smallIconUrl
             };
             this.lNotification.schedule(noti);
           }

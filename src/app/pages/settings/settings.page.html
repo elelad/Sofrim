@@ -8,7 +8,7 @@
       <ion-item lines="inset">
         <ion-icon slot="start" name="book" color="secondary"></ion-icon>
         <ion-label>נוסח</ion-label>
-        <ion-select [(ngModel)]="settingsService.nosach" (ionChange)="setNosach()" class="ltr" cancelText="ביטול"
+        <ion-select dir="rtl" [(ngModel)]="settingsService.nosach" (ionChange)="setNosach()" cancelText="ביטול"
           okText="שמירה">
           <ion-select-option [value]="nosachOptions.Sfarad">ספרד</ion-select-option>
           <ion-select-option [value]="nosachOptions.Askenaz">אשכנז</ion-select-option>
@@ -19,13 +19,14 @@
       <ion-item lines="inset" class="item-text-wrap">
         <ion-icon slot="start" name="megaphone" color="secondary"></ion-icon>
         <ion-label fixed>הודעת שיתוף</ion-label>
-        <ion-input type="text" text-left [(ngModel)]="settingsService.shareMsg" (keyup)="settingsService.setShareMsg()"
-         ></ion-input>
+        <ion-input type="text" text-left [(ngModel)]="settingsService.shareMsg" (keyup)="settingsService.setShareMsg()">
+        </ion-input>
       </ion-item>
       <ion-item>
         <ion-icon slot="start" name="eye-off" color="secondary"></ion-icon>
         <ion-label>תמונה בנוסח מלא</ion-label>
-        <ion-toggle [(ngModel)]="settingsService.showPicAtMale" (ionChange)="settingsService.setShowPicAtMale()">
+        <ion-toggle dir="rtl" [(ngModel)]="settingsService.showPicAtMale"
+          (ionChange)="settingsService.setShowPicAtMale()">
         </ion-toggle>
       </ion-item>
       <ion-item>
@@ -54,41 +55,41 @@
       <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
         <ion-icon slot="start" name="notifications" color="secondary"></ion-icon>
         <ion-label>התראות</ion-label>
-        <ion-toggle [disabled]="plt.is('desktop') || plt.is('mobileweb')" [(ngModel)]="settingsService.allowNotification"
-          (ionChange)="setNotification()"></ion-toggle>
+        <ion-toggle [checked]="settingsService.allowNotification" (ionChange)="setNotification($event)"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="(!plt.is('desktop') && !plt.is('mobileweb'))">
+      <ion-item *ngIf="(!plt.is('desktop') && !plt.is('mobileweb'))" [disabled]="!settingsService.allowNotification">
         <ion-icon slot="start" name="alarm" color="secondary"></ion-icon>
         <ion-label>התראה קרובה</ion-label>
-        <div color="dark" item-content item-right>{{notificationsService.comingNotificationMsg}}</div>
+        <div color="dark">{{comingNotificationMsg}}</div>
       </ion-item>
-      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')" [disabled]="!settingsService.allowNotification">
         <ion-icon slot="start" name="notifications-off" color="secondary"></ion-icon>
         <ion-label>מנע התראה בשבת</ion-label>
-        <ion-toggle [(ngModel)]="settingsService.preventShabatNotification"
-          [disabled]="!settingsService.allowNotification" (ionChange)="setPreventShabatNotification()"></ion-toggle>
+        <ion-toggle [checked]="settingsService.preventShabatNotification"
+          (ionChange)="setPreventShabatNotification($event)"></ion-toggle>
       </ion-item>
-      <ion-item lines="inset" *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+      <ion-item lines="inset" *ngIf="!plt.is('desktop') && !plt.is('mobileweb')"
+        [disabled]="!settingsService.allowNotification">
         <ion-icon slot="start" name="alarm" color="secondary"></ion-icon>
         <ion-label>שעת התראה</ion-label>
-        <ion-select [(ngModel)]="settingsService.notificationTime" [disabled]="!settingsService.allowNotification"
-          (ionChange)="setNotificationTime()" class="ltr" cancelText="ביטול" okText="שמירה">
-          <ion-select-option value="1">19:00</ion-select-option>
-          <ion-select-option value="2">20:00</ion-select-option>
-          <ion-select-option value="3">21:00</ion-select-option>
-          <ion-select-option value="4">22:00</ion-select-option>
-          <ion-select-option value="5">23:00</ion-select-option>
+        <ion-select [(ngModel)]="settingsService.notificationTime" (ionChange)="setNotificationTime()" class="ltr"
+          cancelText="ביטול" okText="שמירה">
+          <ion-select-option [value]="1">19:00</ion-select-option>
+          <ion-select-option [value]="2">20:00</ion-select-option>
+          <ion-select-option [value]="3">21:00</ion-select-option>
+          <ion-select-option [value]="4">22:00</ion-select-option>
+          <ion-select-option [value]="5">23:00</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="notificationsService.badgeSupported">
+      <ion-item *ngIf="notificationsService.badgeSupported" [disabled]="!settingsService.allowNotification">
         <ion-icon slot="start" name="alert" color="secondary"></ion-icon>
         <ion-label>ספירה בסמל</ion-label>
-        <ion-toggle [(ngModel)]="settingsService.showBadge" (ionChange)="setShowBadge()"></ion-toggle>
+        <ion-toggle [checked]="settingsService.showBadge" (ionChange)="setShowBadge($event)"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')">
+      <ion-item *ngIf="!plt.is('desktop') && !plt.is('mobileweb')" [disabled]="!settingsService.allowNotification">
         <ion-icon slot="start" name="musical-note" color="secondary"></ion-icon>
         <ion-label>צליל ארוך</ion-label>
-        <ion-toggle [(ngModel)]="settingsService.longSound" (ionChange)="setLongSound()"></ion-toggle>
+        <ion-toggle [checked]="settingsService.longSound" (ionChange)="setLongSound($event)"></ion-toggle>
       </ion-item>
     </ion-item-group>
     <p *ngIf="plt.is('desktop') || plt.is('mobileweb')" class="ion-text-center">

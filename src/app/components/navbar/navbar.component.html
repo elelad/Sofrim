@@ -7,7 +7,7 @@
       <ion-button *ngIf="settingsService.showAccessibilityBtn && accBtn" (click)="presentPopover($event)">
         <ion-icon slot="icon-only" name="body"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="shareBtn" (click)="presentShaerPopover($event)">
+      <ion-button *ngIf="shareBtn && hebDate.isOmer" (click)="presentShaerPopover($event)">
         <ion-icon slot="icon-only" name="share-social"></ion-icon>
       </ion-button>
     </ion-buttons>

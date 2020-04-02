@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Themes } from '../constants/enums';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,27 +27,28 @@ export class SettingsService {
   public showBadge = true;
   public showKavana = false;
   public longSound = false;
-  public appId = '1220693649';  
+  public appId = '1220693649';
+  public comingNotificationMsg: BehaviorSubject<string> = new BehaviorSubject('אין');
 
   constructor(private plt: Platform) {
-    (localStorage.getItem('sofrimNosach')) ? (this.nosach = localStorage.getItem('sofrimNosach')) : (this.nosach = 'as');
+    localStorage.getItem('sofrimNosach') ? (this.nosach = localStorage.getItem('sofrimNosach')) : this.nosach = 'as';
     // console.log('(localStorage.getItem(sofrimNotification) == true): ' + (localStorage.getItem('sofrimNotification') == 'true'));
-    (localStorage.getItem('sofrimNotification')) ? (this.allowNotification = (localStorage.getItem('sofrimNotification') === 'true')) : (this.allowNotification = true);
-    (localStorage.getItem('sofrimPreventShabatNotification')) ? (this.preventShabatNotification = (localStorage.getItem('sofrimPreventShabatNotification') === 'true')) : (this.preventShabatNotification = true);
-    (localStorage.getItem('sofrimNotificationTime')) ? (this.notificationTime = +localStorage.getItem('sofrimNotificationTime')) : (this.notificationTime = 2);
-    (localStorage.getItem('sofrimShareMsg')) ? (this.shareMsg = localStorage.getItem('sofrimShareMsg')) : (this.shareMsg = this.defultShareMsg);
-    (localStorage.getItem('sofrimFontSize')) ? (this.fontSize = localStorage.getItem('sofrimFontSize')) : (this.fontSize = this.defultFontSizeName);
+    localStorage.getItem('sofrimNotification') ? this.allowNotification = (localStorage.getItem('sofrimNotification') === 'true') : this.allowNotification = true;
+    localStorage.getItem('sofrimPreventShabatNotification') ? this.preventShabatNotification = (localStorage.getItem('sofrimPreventShabatNotification') === 'true') : this.preventShabatNotification = true;
+    localStorage.getItem('sofrimNotificationTime') ? this.notificationTime = +localStorage.getItem('sofrimNotificationTime') : this.notificationTime = 2;
+    localStorage.getItem('sofrimShareMsg') ? this.shareMsg = localStorage.getItem('sofrimShareMsg') : this.shareMsg = this.defultShareMsg;
+    localStorage.getItem('sofrimFontSize') ? this.fontSize = localStorage.getItem('sofrimFontSize') : this.fontSize = this.defultFontSizeName;
 
-    (localStorage.getItem('sofrimShowAccessibilityBtn')) ? (this.showAccessibilityBtn = (localStorage.getItem('sofrimShowAccessibilityBtn') === 'true')) : (this.showAccessibilityBtn = false);
+    localStorage.getItem('sofrimShowAccessibilityBtn') ? this.showAccessibilityBtn = (localStorage.getItem('sofrimShowAccessibilityBtn') === 'true') : this.showAccessibilityBtn = false;
     if (!(localStorage.getItem('sofrimShowAccessibilityBtn')) && (this.plt.is('desktop') || this.plt.is('mobileweb'))) {
       this.showAccessibilityBtn = true;
     }
-    (localStorage.getItem('sofrimShowPicAtMale')) ? (this.showPicAtMale = (localStorage.getItem('sofrimShowPicAtMale') === 'true')) : (this.showPicAtMale = true);
+    localStorage.getItem('sofrimShowPicAtMale') ? this.showPicAtMale = (localStorage.getItem('sofrimShowPicAtMale') === 'true') : this.showPicAtMale = true;
 
-    (localStorage.getItem('sofrimLinkToApp')) ? (this.linkToApp = (localStorage.getItem('sofrimLinkToApp') === 'true')) : (this.linkToApp = true);
-    (localStorage.getItem('sofrimShowBadge')) ? (this.showBadge = (localStorage.getItem('sofrimShowBadge') === 'true')) : (this.showBadge = true);
-    (localStorage.getItem('sofrimShowKavana')) ? (this.showKavana = (localStorage.getItem('sofrimShowKavana') === 'true')) : (this.showKavana = false);
-    (localStorage.getItem('sofrimLongSound')) ? (this.longSound = (localStorage.getItem('sofrimLongSound') === 'true')) : (this.longSound = false);
+    localStorage.getItem('sofrimLinkToApp') ? this.linkToApp = (localStorage.getItem('sofrimLinkToApp') === 'true') : this.linkToApp = true;
+    localStorage.getItem('sofrimShowBadge') ? this.showBadge = (localStorage.getItem('sofrimShowBadge') === 'true') : this.showBadge = true;
+    localStorage.getItem('sofrimShowKavana') ? this.showKavana = (localStorage.getItem('sofrimShowKavana') === 'true') : (this.showKavana = false);
+    localStorage.getItem('sofrimLongSound') ? this.longSound = (localStorage.getItem('sofrimLongSound') === 'true') : (this.longSound = false);
 
     if (localStorage.getItem('sofrimTheme')) {
       this.theme = localStorage.getItem('sofrimTheme') as Themes;
@@ -97,7 +99,7 @@ export class SettingsService {
     localStorage.setItem('sofrimNosach', this.nosach);
   }
 
-  setAlowNotification() {
+    setAlowNotification() {
     console.log(this.allowNotification);
     localStorage.setItem('sofrimNotification', this.allowNotification.toString());
   }

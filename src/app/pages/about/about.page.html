@@ -1,6 +1,6 @@
 <app-navbar [navTitle]="'אודות'" [accBtn]="false" [shareBtn]="false"></app-navbar>
 
-<ion-content>
+<ion-content scrolY="false">
   <ion-list class="ion-no-padding">
     <!-- <ion-list-header>
       אודות סופרים וזוכרים
@@ -28,11 +28,18 @@
       <ion-icon slot="start" name="logo-github" color="secondary"></ion-icon>
       <ion-label>קוד פתוח</ion-label>
     </ion-item>
-    <ion-item detail href='mailto:elelad.dev@gmail.com' rel="_blank">
+    <ion-item *ngIf="plt.is('desktop') || plt.is('mobileweb'); else elseBlock" detail href='mailto:elelad.dev@gmail.com' rel="_blank">
       <ion-icon slot="start" name="mail" color="secondary"></ion-icon>
       <ion-label>צור קשר</ion-label>
       <span class="ion-padding" slot="end">elelad.dev@gmail.com</span>
     </ion-item>
+    <ng-template #elseBlock >
+      <ion-item detail (click)="mail()" rel="_blank">
+        <ion-icon slot="start" name="mail" color="secondary"></ion-icon>
+        <ion-label>צור קשר</ion-label>
+        <span class="ion-padding" slot="end">elelad.dev@gmail.com</span>
+      </ion-item>
+    </ng-template>
   </ion-list>
 </ion-content>
 <app-footer></app-footer>
