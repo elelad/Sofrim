@@ -17,7 +17,8 @@
     "ios-lr": "ionic cordova run ios -l --external",
     "sign-and": "cordova build android --release --buildConfig build.json",
     "rsa": "ionic cordova run android --prod --release --buildConfig build.json",
-    "bsa": "ionic cordova build android --prod --release --buildConfig build.json"
+    "bsa": "ionic cordova build android --prod --release --buildConfig build.json",
+    "and-device": "native-run android --app platforms/android/app/build/outputs/apk/release/app-release.apk --device"
   },
   "private": true,
   "dependencies": {
