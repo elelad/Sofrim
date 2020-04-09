@@ -1,4 +1,5 @@
 // tslint:disable: max-line-length
+// tslint:disable: prefer-for-of
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
@@ -16,7 +17,7 @@ import { NotificationsService } from '../../services/notifications.service';
 })
 export class HomePage implements OnInit, AfterViewInit {
   private dateInput = '';
-  thisYear = 2017;
+  thisYear = 2020;
   private maxYear = this.thisYear + 5;
   private minYear = this.thisYear - 5;
   @ViewChild('datePicker') datePicker;
@@ -60,15 +61,10 @@ export class HomePage implements OnInit, AfterViewInit {
 
     const hours = now.getHours();
     this.showRemindMeAtBtn = (hours >= (this.settingsService.notificationTime + 18));
-    console.log('this.showRemindMeAtBtn', this.showRemindMeAtBtn, this.settingsService.notificationTime + 18, hours);
   }
 
   ngAfterViewInit() {
     this.datePickerEl = document.getElementById('item');
-  }
-
-  sanitize() {
-    return this.sanitizer.bypassSecurityTrustUrl('');
   }
 
   post() {
@@ -83,15 +79,9 @@ export class HomePage implements OnInit, AfterViewInit {
     }).catch(err => console.log(err));
   }
 
-  ionViewWillEnter() {
-    this.getToday();
-  }
-
   async offerDownlad() {
-    if (this.plt.is('mobileweb') && this.settingsService.linkToApp) {//
+    if (this.plt.is('mobileweb') && this.settingsService.linkToApp) {
       const alert = await this.alertController.create({
-        // title: 'סופרים וזוכרים',
-        // subTitle: '<br>כמה פעמים כמעט שכחת ספירת העומר?',
         header: 'כמה פעמים כמעט שכחת ספירת העומר?',
         message: 'תזכורות לספירת העומר ניתן לקבל באפליקציה המלאה<br><br> <strong><h2>הורד עכשיו!</h2></strong>',
         inputs: [{
@@ -116,7 +106,6 @@ export class HomePage implements OnInit, AfterViewInit {
             text: 'לא כרגע',
             role: 'cancel',
             handler: (data) => {
-              console.log(data);
               this.settingsService.linkToApp = false;
               if (data[0] === 'false') {
                 this.settingsService.setLinkToApp();
@@ -164,13 +153,10 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   buildMonthArray() {
-    console.log(this.weekDays, this.months, this.minYear, this.maxYear);
     for (let i = 0; i < 42; i++) {
       this.monthArray[i] = 0;
     }
-    // this.MonthArray.forEach((day)=>{day=0});
     const date = new Date(this.thisYear, this.userMonth, 1);
-    console.log(date.getDay());
     this.monthArray[date.getDay()] = 1;
     const last = this.getLastDayOfMonth();
     for (let i = 0; i < 42; i++) {
@@ -190,13 +176,11 @@ export class HomePage implements OnInit, AfterViewInit {
     this.week4 = this.monthArray.filter((e, i) => (i >= 21 && i < 28));
     this.week5 = this.monthArray.filter((e, i) => (i >= 28 && i < 35));
     this.week6 = this.monthArray.filter((e, i) => (i >= 35));
-    console.log(this.monthArray);
   }
 
   getLastDayOfMonth(): number {
     const date = new Date(this.thisYear, this.userMonth + 1, 1);
     const day: number = new Date(date.getTime() - 60000).getDate();
-    console.log('last day of month: ' + day);
     return day;
   }
 
@@ -205,24 +189,17 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   datePickerClick() {
-    // console.log('datePickerClick');
-    // console.log(this.datePicker);
     this.datePicker.open();
   }
-
-
 
   getOmerFromDateInput() {
     const values: string[] = this.getDate();
     const date: Date = new Date(+values[0], +values[1] - 1, +values[2]);
-    const hours: number = new Date(Date.now()).getHours();
-    // console.log("hours: " + hours);
     this.hebDate.getOmer(date.getTime());
   }
 
   getDate() {
     const values: string[] = this.dateInput.split('-');
-    // console.log(values);
     return values;
   }
 
@@ -237,16 +214,11 @@ export class HomePage implements OnInit, AfterViewInit {
     const day: number = now.getDate();
     const stringMonth: string = (month.toString().length === 1) ? ('0' + month.toString()) : month.toString();
     const stringDay: string = (day.toString().length === 1) ? ('0' + day.toString()) : day.toString();
-    // console.log(stringMonth);
     this.dateInput = now.getFullYear() + '-' + stringMonth + '-' + stringDay;
-    console.log(this.dateInput);
-    // this.getOmerFromDateInput();
     this.hebDate.getOmer(now.getTime());
     this.userDay = day;
     this.userMonth = month - 1;
     this.thisYear = now.getFullYear();
-    // console.log('this.hebDate.omerNum', this.hebDate.omerNum);
-    // this.getHebDate();
   }
 
   test() {
@@ -258,7 +230,6 @@ export class HomePage implements OnInit, AfterViewInit {
     (this.pick) ? this.pick = false : this.pick = true;
     const blur = document.getElementsByClassName('blur');
     for (let i = 0; i < blur.length; i++) {
-      // console.log(blur[i]);
       if (this.pick) {
         blur[i].setAttribute('tabindex', '-1');
       } else {
@@ -285,16 +256,16 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   async rateUs() {
-    const rateUsAt = +localStorage.getItem('sofrimOfferRateUs');
+    const rateUsAt = +localStorage.getItem(C.storageKeys.sofrimOfferRateUs);
     const now = new Date(Date.now()).getTime();
     if (!rateUsAt) {
-      return localStorage.setItem('sofrimOfferRateUs', (now + 259200000).toString());
+      return localStorage.setItem(C.storageKeys.sofrimOfferRateUs, (now + 259200000).toString());
     }
     if (rateUsAt < now && rateUsAt > 0 && this.launchReview.isRatingSupported()) {
       if (this.plt.is('ios') && this.launchReview.isRatingSupported()) {
         this.launchReview.rating().then((status) => {
           if (status === 'dismissed') {
-            localStorage.setItem('sofrimOfferRateUs', (now + 259200000).toString());
+            localStorage.setItem(C.storageKeys.sofrimOfferRateUs, (now + 259200000).toString());
           }
         }).catch(err => console.log(err));
       } else if (this.plt.is('android')) {
@@ -305,14 +276,14 @@ export class HomePage implements OnInit, AfterViewInit {
               text: 'לא כרגע',
               role: 'cancel',
               handler: () => {
-                localStorage.setItem('sofrimOfferRateUs', (now + 259200000).toString());
+                localStorage.setItem(C.storageKeys.sofrimOfferRateUs, (now + 259200000).toString());
               }
             },
             {
               text: 'בשמחה',
               handler: () => {
                 this.launchReview.launch(this.settingsService.appId).catch(err => console.log(err));
-                localStorage.setItem('sofrimOfferRateUs', (now + 99999999999).toString());
+                localStorage.setItem(C.storageKeys.sofrimOfferRateUs, (now + 99999999999).toString());
               }
             }
           ]

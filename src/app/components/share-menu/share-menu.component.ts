@@ -38,18 +38,15 @@ export class ShareMenuComponent implements OnInit {
   }
 
   sms() {
-    // ga('send', 'event', 'share', 'sms');
     this.bldMsg();
   }
 
   whatsup() {
-    // ga('send', 'event', 'share', 'whatsup');
     console.log('whats up');
     this.bldMsg();
   }
 
   mail() {
-    // ga('send', 'event', 'share', 'mail');
     this.bldMsg();
   }
 
@@ -60,57 +57,27 @@ export class ShareMenuComponent implements OnInit {
 
   copy() {
     this.close();
-    // ga('send', 'event', 'share', 'copy');
     try {
       // Now that we've selected the anchor text, execute the copy command
       const input = document.createElement('textarea');
-      console.log(input);
       input.value = this.subjectMsg + ' ' + this.hebDate.omer + ' ' + this.urlMsg;
-      console.log(input.value);
       document.body.appendChild(input);
       input.select();
       const successful = document.execCommand('copy');
       const msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copy command was ' + msg);
       document.body.removeChild(input);
       this.toast('הטקסט הועתק ללוח');
     } catch (err) {
-      console.log('Oops, unable to copy');
+      console.log(err);
     }
   }
   post() {
     this.close();
-    // ga('send', 'event', 'share', 'facebook');
     this.toast('מכין הודעה');
-    /*let options: {} = {
-      method: 'feed',
-      link: this.url,
-      name: this.subjectMsg,
-      //picture: this.url + '/assets/start.jpg',
-      caption: 'סופרים וזוכרים',
-      description: this.hebDate.omer
-    }*/
-    /* let urlPop:string = "https://www.facebook.com/dialog/feed?app_id=652670708251189&display=popup&link=https%3A%2F%2F"
-      + this.url
-      + "&name=" + this.subjectMsg
-      + "&description=" + this.hebDate.omer;
-      window.open(urlPop, "pop", "width=600, height=400, scrollbars=no, menubar=no, location=no");// */
     const urlPop: string = 'https://www.facebook.com/dialog/share?app_id=652670708251189&display=popup&href='
       + this.url
       + '&quote=' + this.subjectMsg + ' ' + this.hebDate.omer + ' ' + this.newUrlMsg;
-    window.open(urlPop, '_system', 'width=600, height=400, scrollbars=no, menubar=no, location=no'); //
-    /*if (this.plt.is('core')) {
-      FB.ui(options,
-        function (response) {
-          if (response && !response.error_message) {
-            console.log('Posting completed.');
-          } else {
-            console.log('Error while posting.');
-          }
-        });
-    } else {
-      Facebook.showDialog(options).catch((e)=>console.log(e));
-    }*/
+    window.open(urlPop, '_system', 'width=600, height=400, scrollbars=no, menubar=no, location=no');
   }
 
   async toast(msg: string) {

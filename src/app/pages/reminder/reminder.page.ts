@@ -15,7 +15,7 @@ export class ReminderPage implements OnInit {
 
   constructor(
     private http: HttpClient, private fb: FormBuilder, private toastCtrl: ToastController,
-    private notificationsService: NotificationsService) {//
+    private notificationsService: NotificationsService) {
   }
 
   name = '';
@@ -36,14 +36,6 @@ export class ReminderPage implements OnInit {
   };
 
   validationMessages = {
-    /* 'firstName': {
-      'required': this.tService.getTranslatedText('Please Enter First Name'),
-      'maxlength': this.tService.getTranslatedText('max ') + this.nameMaxLength + this.tService.getTranslatedText(' characters'),
-    },
-    'lastName': {
-      'required': this.tService.getTranslatedText('Please Enter Last Name'),
-      'maxlength': this.tService.getTranslatedText('max ') + this.nameMaxLength + this.tService.getTranslatedText(' characters'),
-    }, */
     name: {
       required: 'נא להזין שם',
       maxlength: 'מקסימום 30 תווים',
@@ -51,16 +43,11 @@ export class ReminderPage implements OnInit {
     mail: {
       required: 'נא להזין כתובת דואר אלקטרוני',
       email: 'נא להזין כתובת דואל תקינה',
-      // 'maxlength': this.tService.getTranslatedText('max ') + this.emailMaxLength + this.tService.getTranslatedText(' characters'),
     },
     phone: {
       required: 'נא להזין מספר טלפון',
-      // 'pattern': 'נא להזין ספרות בלבד',
       minlength: 'מינימום 9 ספרות',
       incorrect: 'נא להזין מספר טלפון תקין'
-      // 'maxlength': this.tService.getTranslatedText('max ') + this.passwordMaxLength + this.tService.getTranslatedText(' characters'),
-      // 'minlength': this.tService.getTranslatedText('min 6 characters'),
-      // 'pattern': this.tService.getTranslatedText('At least one letter and one number'),
     }
   };
 
@@ -79,24 +66,19 @@ export class ReminderPage implements OnInit {
 
     this.remiderForm.valueChanges.subscribe(data => this.onValueChanged(this.remiderForm, data));
 
-    this.onValueChanged(this.remiderForm); // (re)set validation messages now
-
+    this.onValueChanged(this.remiderForm);
   }
 
   onValueChanged(form: any, data?: any) {
     if (!form) { return; }
-    // const form = this.signUpForm;
     let invalidCount = 0;
     this.errorMsg = '';
     this.error = false;
-    // console.log(form.controls);
     for (const control in form.controls) {
       if (form.controls.hasOwnProperty(control)) {
         const controlName = form.get(control);
-        // console.log(control);
         if (controlName && controlName.dirty && controlName.invalid) {
           invalidCount++;
-          // this.formErrors[control] = '';
           const messages = this.validationMessages[control];
           for (const key in controlName.errors) {
             if (controlName.errors.hasOwnProperty(key)) {
@@ -117,11 +99,6 @@ export class ReminderPage implements OnInit {
     this.name = this.remiderForm.get('name').value;
     this.mail = this.remiderForm.get('mail').value;
     this.phone = this.remiderForm.get('phone').value;
-    // console.log(invalidCount);
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReminderPage');
   }
 
   validateName() {
@@ -142,10 +119,6 @@ export class ReminderPage implements OnInit {
 
   send() {
     this.loading = true;
-    console.log(this.validatePhone());
-    console.log(this.name);
-    console.log(this.mail);
-    console.log(this.phone);
     const body = {
       name: this.name,
       mail: this.mail,
@@ -155,7 +128,7 @@ export class ReminderPage implements OnInit {
     this.http.post('https://us-central1-hello-world-3a8b8.cloudfunctions.net/saveNextYearReminder', stringBody)
       .pipe(retry(2))
       .subscribe((res: any) => {
-        if (res) { // .status === 200
+        if (res) {
           const key = res;
           this.notificationsService.removeNextYearNotifications();
           localStorage.setItem(C.localSofrimNextYearReminder, key);
@@ -166,12 +139,9 @@ export class ReminderPage implements OnInit {
         } else {
           this.checkForErrors(res);
         }
-        console.log(res);
       }, e => {
         console.log(e);
         this.checkForErrors(e);
-        // console.log(e.status);
-        // })
       });
   }
 
@@ -198,11 +168,9 @@ export class ReminderPage implements OnInit {
           this.errorMsg = 'תקלה בהעברת הנתונים ניתן לנסות שוב מאוחר יותר';
           break;
       }
-      // this.zone.run(() => {
       console.log(this.formErrors.phone);
       this.formInvalid = true;
       this.error = true;
-      // this.ref.detectChanges();
     }, 100);
   }
 
@@ -216,8 +184,7 @@ export class ReminderPage implements OnInit {
     const stringBody = JSON.stringify(body);
     this.http.post('https://us-central1-hello-world-3a8b8.cloudfunctions.net/removeNextYearReminder', stringBody, { responseType: 'text'})
       .subscribe(async (res: any) => {
-        if (res) { // .status === 200
-          // const key = res._body;
+        if (res) {
           localStorage.removeItem(C.localSofrimNextYearReminder);
           const toast = await this.toastCtrl.create({
             message: 'הוסר בהצלחה',

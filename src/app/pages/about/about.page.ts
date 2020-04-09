@@ -12,7 +12,7 @@ import { C } from '../../constants/constants';
   styleUrls: ['./about.page.scss'],
 })
 export class AboutPage implements OnInit {
-  appVersion = '1.7.1';
+  appVersion = '1.8.1';
 
   constructor(
     public plt: Platform, private appV: AppVersion, private launchReview: LaunchReview,

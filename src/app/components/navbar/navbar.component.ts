@@ -13,7 +13,7 @@ import { C } from '../../constants/constants';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-  @Input() navTitle = 'סופרים וזוכרים';
+  @Input() navTitle = C.appTitle;
   @Input() accBtn = true;
   @Input() shareBtn = true;
   @Input() menuBtn = true;

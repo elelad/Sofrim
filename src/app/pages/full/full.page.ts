@@ -17,32 +17,6 @@ export class FullPage implements OnInit {
     this.getToday();
   }
 
-  getStartOmer() {
-    let startOmer = '';
-    switch (this.settingsService.nosach) {
-      case 'as':
-        startOmer = C.edothmizrachStart;
-        break;
-      case 'em':
-        startOmer = C.edothmizrachStart;
-        break;
-    }
-    return startOmer;
-  }
-
-  getEndOmer() {
-    let endOmer = '';
-    switch (this.settingsService.nosach) {
-      case 'as':
-        endOmer = C.edothmizrachEnd;
-        break;
-      case 'em':
-        endOmer = C.edothmizrachEnd;
-        break;
-    }
-    return endOmer;
-  }
-
   getToday() {
     const now = new Date(Date.now());
     this.hebDate.getOmer(now.getTime());
