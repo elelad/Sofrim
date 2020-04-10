@@ -9,6 +9,8 @@ import { C } from '../../constants/constants';
 import { HebDateService } from '../../services/heb-date.service';
 import { SettingsService } from '../../services/settings.service';
 import { NotificationsService } from '../../services/notifications.service';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { asapScheduler } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -38,8 +40,10 @@ export class HomePage implements OnInit, AfterViewInit {
   showRemindMeAtBtn = false;
 
   constructor(
-    public hebDate: HebDateService, private alertController: AlertController, private sanitizer: DomSanitizer, public notificationsService: NotificationsService,
-    public plt: Platform, private settingsService: SettingsService, private launchReview: LaunchReview, private socialSharing: SocialSharing) {
+    public hebDate: HebDateService, private alertController: AlertController,
+    private sanitizer: DomSanitizer, public notificationsService: NotificationsService,
+    public plt: Platform, private settingsService: SettingsService, private splashScreen: SplashScreen,
+    private launchReview: LaunchReview, private socialSharing: SocialSharing) {
 
   }
 
@@ -65,6 +69,9 @@ export class HomePage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.datePickerEl = document.getElementById('item');
+    this.plt.ready().then(() => {
+      
+    });
   }
 
   post() {

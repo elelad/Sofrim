@@ -13,7 +13,6 @@ declare var cordova: any;
 export class NotificationsService {
   private delayTime = 0;
   private comingNotification = 0;
-  // public comingNotificationMsg: BehaviorSubject<string> = new BehaviorSubject('אין');
   public lNotification: any;
   public badgeSupported = false;
 
@@ -23,18 +22,10 @@ export class NotificationsService {
   }
 
   initNotifications(force: boolean = false) {
-    this.plt.ready().then(() => {
-      this.lNotification = cordova.plugins.notification.local;
-      // if (this.plt.is('ios')) {
-      //   // this.lNotification.addActions('asnooze', [{ id: 'snooze', title: 'aaa', launch: true }]);
-      //   this.lNotification.addActionGroup('asnooze', [{ id: 'snooze', title: 'aaa', launch: true }]);
-      // }
-      // this.regidaterListeners();
-      this.initBadge();
-      this.checkPermissionAndSetAll(force, false);
-      // this.getNewNote(); // for test
-      this.setNextYearOfferNotifications();
-    });
+    this.lNotification = cordova.plugins.notification.local;
+    this.initBadge();
+    this.checkPermissionAndSetAll(force, false);
+    this.setNextYearOfferNotifications();
   }
 
   initBadge() {
@@ -51,10 +42,7 @@ export class NotificationsService {
   }
 
   checkIfLaunchFromNotification() {
-    console.log('cordova.plugins.notification.local.launchDetails');
     const launchDetails = this.lNotification.launchDetails;
-    console.log('launchDetails: ');
-    console.log(launchDetails);
     if (launchDetails) {
       return true;
     } else {
@@ -62,35 +50,7 @@ export class NotificationsService {
     }
   }
 
-  regidaterListeners() {
-
-    this.lNotification.on('snooze', (notification: any, eopts) => {// + i
-      console.log(notification);
-      this.snoozeAlert(notification.id - 1);
-    });
-    // }
-    this.lNotification.on('click', (n, s) => {
-      console.log('notification clicked');
-      console.log(n);
-      console.log(s);
-      // this.localNotifications.update()
-      if (n.id >= 700 && n.id < 800) {
-        // this.app.getRootNav().push('Reminder');
-      }
-      this.badge.clear().then((b) => {
-        console.log('badge');
-        console.log(b);
-      }).catch((e) => {
-        console.log('badge error');
-        console.log(e);
-      });
-    });
-  }
-
-
-
   getNewNote() {
-    console.log('new noti schedule');
     const notification = this.addSound({
       id: 40,
       title: 'new noti',
@@ -130,12 +90,10 @@ export class NotificationsService {
       smallIcon: C.smallIconUrl,
       badge: (this.settingsService.showBadge) ? 1 : null
     });
-    console.log('test notification sent');
   }
 
   checkPermissionAndSetAll(force: boolean = false, toast: boolean = true) {
     if (this.plt.is('cordova')) {
-      (force) ? console.log('force') : console.log('not force');
       this.lNotification.hasPermission((has: boolean) => {
         if (has) {
           this.setIfNoNotifications(force, toast);
@@ -156,11 +114,9 @@ export class NotificationsService {
   }
 
   setIfNoNotifications(force: boolean = false, toast: boolean = true) {
-    console.log('setIfNoNotifications');
     if (this.plt.is('cordova')) {
       this.lNotification.getAll((allScheduled) => {
         if (allScheduled.length > 0 && !force && allScheduled[0].actions && allScheduled[0].actions.length > 0) {
-          console.log('allScheduled: no need to update');
           this.getComingNotification();
         } else {
           this.setNotificationForAllOmer(toast);
@@ -170,9 +126,7 @@ export class NotificationsService {
   }
 
   async snoozeAlert(omerIndex) {
-    console.log('omerIndex: ' + omerIndex);
     const msg = C.omerDays[omerIndex].getOmerString(this.settingsService.nosach);
-    console.log(msg);
     const notification = {
       id: omerIndex + 1,
       badge: (this.settingsService.showBadge) ? omerIndex + 1 : null,
@@ -181,7 +135,6 @@ export class NotificationsService {
     };
     const alert = await this.alertCtrl.create({
       header: 'הזכר לי בעוד',
-      // subTitle: '',
       inputs: [
         { type: 'radio', name: '5min', value: '5', label: 'חמש דקות', id: '5min' },
         { type: 'radio', name: '10min', value: '10', label: 'עשר דקות', id: '10min', checked: true },
@@ -193,7 +146,6 @@ export class NotificationsService {
         {
           text: 'הפעלה',
           handler: (data) => {
-            console.log(data);
             this.lNotification.schedule(this.addSound({
               id: omerIndex + 1,
               title: notification.title,
@@ -214,9 +166,6 @@ export class NotificationsService {
                 cssClass: 'toast'
               });
               toast.present();
-              // if (!this.plt.is('ios')) {
-              //   this.plt.exitApp();
-              // }
             }, 1000);
           }
         },
@@ -230,10 +179,7 @@ export class NotificationsService {
   }
 
   getActions() {
-    // if (this.plt.is('android')) {
     return [{ id: 'snooze', title: 'נודניק', launch: true }];
-    // }
-    // return 'asnooze';
   }
 
   setNotificationForAllOmer(toast: boolean = true) {
@@ -241,13 +187,8 @@ export class NotificationsService {
       this.delayTime = this.settingsService.notificationTime * 60 * 60 * 1000;
       const nowDate = new Date(Date.now());
       const geoYear = nowDate.getFullYear();
-      console.log(geoYear);
       let omerDays: number[];
       if (localStorage.getItem('omer' + geoYear)) { omerDays = JSON.parse(localStorage.getItem('omer' + geoYear)); }
-      const notificationArray: {}[] = [];
-      const consoleArray: {}[] = [];
-      // console.log('--- omerDays ---');
-      // console.table(omerDays);
       if (omerDays) {
         omerDays.forEach((day: any, index) => {
           let isShabat = false;
@@ -256,13 +197,10 @@ export class NotificationsService {
             isShabat = true;
           }
           if ((day + this.delayTime) > nowDate.getTime() && !isShabat) {// to set notification for this day all evening (6 * 60 * 60000)
-            // notificationArray.push(this.addSound({
             this.lNotification.schedule(this.addSound({
               id: index + 1,
               title: 'סופרים וזוכרים',
               text: C.omerDays[index].getOmerString(this.settingsService.nosach),
-              // actions: [{ id: 'snooze', title: 'נודניק', launch: true }],// + index + 1
-              // actions: 'asnooze',
               actions: this.getActions(),
               trigger: { at: new Date(day + this.delayTime) },
               foreground: true,
@@ -272,16 +210,8 @@ export class NotificationsService {
               smallIcon: C.smallIconUrl,
               badge: (this.settingsService.showBadge) ? index + 1 : null,
             }));
-            const consoleDate = new Date(day + this.delayTime);
-            consoleArray.push({
-              date: consoleDate.toString(),
-              id: index,
-              text: C.omerDays[index].getOmerString(this.settingsService.nosach),
-              omerDay: day.toString()
-            });
           }
-          if (index === 27 && (day + 2.5 * 60 * 60 * 1000) > nowDate.getTime()) {// && !isShabat
-            console.log('roy: ' + new Date(day + 2.5 * 60 * 60 * 1000));
+          if (index === 27 && (day + 2.5 * 60 * 60 * 1000) > nowDate.getTime()) {
             this.lNotification.schedule(this.addSound({
               id: 9999,
               title: 'סופרים וזוכרים',
@@ -295,8 +225,6 @@ export class NotificationsService {
           }
         });
       }
-      // console.log('notificationArray:');
-      // console.table(notificationArray);
       if (toast) {
         this.toast('התראות הוגדרו');
       }
@@ -316,40 +244,27 @@ export class NotificationsService {
     } else {
       return false;
     }
-
   }
 
   removeAll() {
     try {
       this.lNotification.cancelAll((e) => {
-        console.log('all notification removed');
         this.toast('התראות בוטלו');
         this.settingsService.comingNotificationMsg.next('אין');
       });
-    } catch (e) {
-      console.log(e);
-    }
-
+    } catch (e) { console.log(e); }
   }
 
   getComingNotification() {
     if (this.plt.is('cordova') && this.settingsService.allowNotification) {
       this.comingNotification = 0;
       this.lNotification.getAll((n) => {
-        console.log('getComingNotification');
-        console.table(n);
         const now = (Math.floor(Date.now() / 1000));
         for (const noti of n) {
           if (this.comingNotification === 0) {
-            console.log(typeof (noti.trigger.at));
             this.comingNotification = noti.trigger.at;
-            console.log('noti.at: ' + noti.trigger.at);
-            console.log('now: ' + now);
           } else {
             if ((noti.trigger.at < this.comingNotification && (noti.trigger.at > now))) {
-              console.log('(noti.at < this.comingNotification) && (noti.trigger.at > now)');
-              console.log('noti.trigger.at: ' + noti.trigger.at);
-              console.log('now: ' + now);
               this.comingNotification = noti.trigger.at;
             }
           }
@@ -362,8 +277,6 @@ export class NotificationsService {
           this.settingsService.comingNotificationMsg.next(comingString);
 
         }
-        // console.log('this.comingNotification:' + comingDate.toString());
-        // console.log(this.settingsService.comingNotificationMsg.value);
       });
     } else if (this.plt.is('cordova')) {
       this.settingsService.comingNotificationMsg.next('אין');
@@ -380,25 +293,15 @@ export class NotificationsService {
     toast.present();
   }
 
-  onTaskAdded(task) {
-    console.log('Task successfully scheduled.');
-  }
-
-  onError(error) {
-    alert('Sorry, couldn\'t set the alarm: ' + error);
-  }
-
   setNextYearOfferNotifications() {
     const isSet = (localStorage.getItem(C.localSofrimNextYearReminder));
     if (this.lNotification && !isSet) {
       const nowDate = new Date(Date.now());
       const geoYear = nowDate.getFullYear();
-      console.log(geoYear);
       let omerDays: number[];
       if (localStorage.getItem('omer' + geoYear)) { (omerDays = JSON.parse(localStorage.getItem('omer' + geoYear))); }
       if (omerDays.length > 0) {
         for (let i = 0; i < 2; i++) {
-          console.log(omerDays[45 + i]);
           if (omerDays[45 + i] > Date.now()) {
             const noti = {
               id: 700 + i,
