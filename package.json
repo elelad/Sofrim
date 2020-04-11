@@ -1,8 +1,9 @@
 {
   "name": "sofrim",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "version": "1.8.0",
+  "author": "Elad Elram",
+  "homepage": "https://www.sofrim.co.il",
+  "description": "Omer Notification App",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -58,7 +59,6 @@
     "cordova-plugin-x-socialsharing": "^5.6.4",
     "cordova-plugin-zip": "^3.1.0",
     "core-js": "^2.5.4",
-    "cpx": "^1.5.0",
     "es6-promise-plugin": "^4.2.2",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
@@ -75,6 +75,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "cpx": "^1.5.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -87,7 +88,6 @@
     "tslint": "~5.15.0",
     "typescript": "~3.8.3"
   },
-  "description": "An Ionic project",
   "cordova": {
     "plugins": {
       "cordova-plugin-badge": {},
