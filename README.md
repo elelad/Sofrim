@@ -1,7 +1,11 @@
+<div style="text-align:center">
+<img src="https://www.sofrim.co.il/assets/icon.png" alt="Sofrim Logo" width="120" />
+</div>
+
 # Sofrim
 Omer Notification App
 
-![Sofrim Logo](/src/assets/icon.png)
+
 
 ## Installation
 
