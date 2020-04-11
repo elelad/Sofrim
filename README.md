@@ -1,7 +1,7 @@
 # Sofrim
 Omer Notification App
 
-![Sofrim Logo](/src/assets/icon.png | width=140)
+![Sofrim Logo](/src/assets/icon.png)
 
 ## Installation
 
