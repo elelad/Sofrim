@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SettingsService } from './settings.service';
-import { ToastController, Platform, AlertController } from '@ionic/angular';
-import { C } from '../constants/constants';
 import { Badge } from '@ionic-native/badge/ngx';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
+import { C } from '../constants/constants';
+import { SettingsService } from './settings.service';
 
 declare var cordova: any;
 

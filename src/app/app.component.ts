@@ -44,14 +44,14 @@ export class AppComponent {
       this.splashScreen.hide();
       this.badge.clear(); // clear badge
       this.notificationsService.initNotifications(msg === 'done');
-      this.regidaterListeners();
+      this.registerListeners();
       setTimeout(() => {
-        this.updateFromCodePush(); // update from code push in backgound
+        this.updateFromCodePush(); // update from code push in background
       }, 2000);
     }
   }
 
-  regidaterListeners() {
+  registerListeners() {
 
     this.notificationsService.lNotification.on('snooze', (notification: any, eopts) => {// + i
       // console.log(notification);
@@ -61,7 +61,7 @@ export class AppComponent {
     this.notificationsService.lNotification.on('click', (n, s) => {
       console.log('notification clicked');
       if (n.id >= 700 && n.id < 800) {
-        this.navCtrl.navigateRoot(['/remivder']);
+        this.navCtrl.navigateRoot(['/reminder']);
       }
       this.badge.clear().then((b) => {
         console.log('badge');
@@ -71,6 +71,10 @@ export class AppComponent {
         console.log(e);
       });
     });
+
+    asapScheduler.schedule(() => {
+      this.notificationsService.lNotification.fireQueuedEvents();
+    }, 500);
 
     let clicked = 0;
     this.plt.backButton.subscribe(async () => {
