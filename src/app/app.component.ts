@@ -26,7 +26,7 @@ export class AppComponent {
   ];
 
   constructor(
-    private plt: Platform,
+    public plt: Platform,
     private splashScreen: SplashScreen, private navCtrl: NavController,
     private statusBar: StatusBar, private notificationsService: NotificationsService, private menuCtrl: MenuController,
     private badge: Badge, private codePush: CodePush, private hebDateService: HebDateService, private toastCtrl: ToastController

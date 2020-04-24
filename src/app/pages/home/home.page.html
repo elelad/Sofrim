@@ -22,6 +22,12 @@
         תזכורת להורדה בשנה הבאה?
       </ion-button>
     </div>
+    <div *ngIf="!isIgnoringBatteryOptimizations" class="ion-text-center ion-margin">
+      <ion-button color="dark" (click)="showOptimizationAlert()">
+        <ion-icon slot="start" color="primary" name="alert-circle-outline"></ion-icon>
+        בעיה בהגדרת התראות
+      </ion-button>
+    </div>
 
     <ion-card id="omerCard">
       <ion-card-header class="ion-text-end">

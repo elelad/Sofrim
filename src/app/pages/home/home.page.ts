@@ -4,13 +4,14 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { C } from '../../constants/constants';
 import { HebDateService } from '../../services/heb-date.service';
-import { SettingsService } from '../../services/settings.service';
 import { NotificationsService } from '../../services/notifications.service';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { SettingsService } from '../../services/settings.service';
 import { asapScheduler } from 'rxjs';
+
+declare var cordova: any;
 
 @Component({
   selector: 'app-home',
@@ -38,12 +39,14 @@ export class HomePage implements OnInit, AfterViewInit {
   week6: number[] = [];
   showNextYearReminderBtn = false;
   showRemindMeAtBtn = false;
+  isIgnoringBatteryOptimizations = true;
 
   constructor(
     public hebDate: HebDateService, private alertController: AlertController,
     private sanitizer: DomSanitizer, public notificationsService: NotificationsService,
-    public plt: Platform, private settingsService: SettingsService, private splashScreen: SplashScreen,
-    private launchReview: LaunchReview, private socialSharing: SocialSharing) {
+    public plt: Platform, private settingsService: SettingsService,
+    private launchReview: LaunchReview, private socialSharing: SocialSharing,
+    private toastCtrl: ToastController) {
 
   }
 
@@ -51,7 +54,7 @@ export class HomePage implements OnInit, AfterViewInit {
     if (this.plt.is('ios') || this.plt.is('android')) {
       this.rateUs();
     } else {
-      this.offerDownlad();
+      this.offerDownload();
     }
     this.getToday();
     const now = new Date(Date.now());
@@ -69,9 +72,69 @@ export class HomePage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.datePickerEl = document.getElementById('item');
+    this.checkOptimization();
+  }
+
+  checkOptimization() {
     this.plt.ready().then(() => {
-      
+      if (this.plt.is('cordova') && this.plt.is('android')) {
+        cordova.plugins.DozeOptimize.IsIgnoringBatteryOptimizations(async (response) => {
+          console.log('IsIgnoringBatteryOptimizations: ' + response);
+          if (response === 'false') {
+            this.isIgnoringBatteryOptimizations = false;
+          } else {
+            this.isIgnoringBatteryOptimizations = true;
+            // console.log('Application already Ignoring Battery Optimizations');
+          }
+        }, (error) => {
+          this.isIgnoringBatteryOptimizations = true;
+          // console.error('IsIgnoringBatteryOptimizations Error ' + error);
+        });
+      }
     });
+  }
+
+  showOptimizationAlert() {
+    if (this.plt.is('cordova') && this.plt.is('android')) {
+      cordova.plugins.DozeOptimize.IsIgnoringBatteryOptimizations(async (response) => {
+        console.log('IsIgnoringBatteryOptimizations: ' + response);
+        if (response === 'false') {
+          this.isIgnoringBatteryOptimizations = false;
+          const alert = await this.alertController.create({
+            header: 'בעיה בהגדרת התראות',
+            message: 'בכדי לקבל התראות האפליקציה צריכה לקבל אישור לעבודה ברקע. מומלץ ללחוץ אישור בהודעת המערכת הבאה',
+            buttons: [
+              {
+                text: 'הבנתי',
+                handler: () => {
+                  cordova.plugins.DozeOptimize.RequestOptimizations((response2) => {
+                    // console.log(response2);
+                    asapScheduler.schedule(() => { this.checkOptimization(); }, 10000);
+                  }, (error) => {
+                    // console.error('BatteryOptimizations Request Error ' + error);
+                  });
+                }
+              }
+            ]
+          });
+          alert.present();
+        } else {
+          this.isIgnoringBatteryOptimizations = true;
+          const toast = await this.toastCtrl.create({
+            message: 'עבודה ברקע הוגדרה',
+            duration: 3000,
+            position: 'top',
+            cssClass: 'toast'
+          });
+          toast.present();
+          this.isIgnoringBatteryOptimizations = true;
+          // console.log('Application already Ignoring Battery Optimizations');
+        }
+      }, (error) => {
+        this.isIgnoringBatteryOptimizations = true;
+        // console.error('IsIgnoringBatteryOptimizations Error ' + error);
+      });
+    }
   }
 
   post() {
@@ -86,7 +149,7 @@ export class HomePage implements OnInit, AfterViewInit {
     }).catch(err => console.log(err));
   }
 
-  async offerDownlad() {
+  async offerDownload() {
     if (this.plt.is('mobileweb') && this.settingsService.linkToApp) {
       const alert = await this.alertController.create({
         header: 'כמה פעמים כמעט שכחת ספירת העומר?',

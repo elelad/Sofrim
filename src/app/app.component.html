@@ -14,6 +14,13 @@
             <ion-label>{{p.title}}</ion-label>
           </ion-item>
         </ion-menu-toggle>
+        <ion-menu-toggle *ngIf="plt.is('cordova') && plt.is('android')">
+          <ion-item detail="true"
+            href="https://drive.google.com/file/d/1gFuRm5CdHHMGsL0Cldblwo1b9pguC3CC/view?usp=sharing" target="_blank">
+            <ion-icon slot="start" name="notifications" color="secondary"></ion-icon>
+            <ion-label>מדריך להגדרת התראות</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>

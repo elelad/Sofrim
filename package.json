@@ -48,6 +48,7 @@
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-doze-Optimize": "git+https://github.com/thomas550i/cordova-plugin-doze-Optimize.git",
     "cordova-plugin-file": "^4.3.3",
     "cordova-plugin-file-transfer": "^1.6.3",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
@@ -109,7 +110,8 @@
       },
       "cordova-plugin-local-notification": {
         "ANDROID_SUPPORT_V4_VERSION": "26.+"
-      }
+      },
+      "cordova.plugins.DozeOptimize": {}
     },
     "platforms": [
       "ios",
