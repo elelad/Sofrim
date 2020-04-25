@@ -1,6 +1,6 @@
-<div style="text-align:center">
-<img src="https://www.sofrim.co.il/assets/icon.png" alt="Sofrim Logo" width="120" />
-</div>
+<p align="center">
+<img align="center" src="https://www.sofrim.co.il/assets/icon.png" alt="Sofrim Logo" width="200" />
+</p>
 
 # Sofrim
 Omer Notification App
