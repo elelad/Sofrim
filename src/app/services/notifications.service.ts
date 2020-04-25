@@ -99,7 +99,7 @@ export class NotificationsService {
         } else {
           this.lNotification.requestPermission((granted) => {
             if (this.lNotification.hasPermission) {
-              this.setIfNoNotifications(force);
+              this.setIfNoNotifications(force, toast);
             }
             this.lNotification.hasPermission((hass: boolean) => {
               if (hass) {
